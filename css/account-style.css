@@ -1,0 +1,69 @@
+#account-page-container>div {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+#info-container {
+    width: calc(40% - 5px);
+    display: flex;
+}
+
+#info-container form {
+    width: 90%;
+    min-width: 350px;
+    max-width: 450px;
+    padding-top: 25px;
+}
+
+#my-rooms-container {
+    width: calc(60% - 5px);
+}
+
+#my-rooms .delete-room-button {
+    border-color: var(--highlight);
+    color: var(--highlight);
+    width: 70%;
+}
+
+#my-rooms .delete-room-button:hover {
+    animation-name: delete-button-anim;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes delete-button-anim {
+    to {
+        background-color: var(--highlight);
+        color: var(--bg-color);
+    }
+}
+
+
+#info-container>form input {
+    border-bottom: 2px solid var(--dark-blue);
+    margin: 5px 15px 5px 15px;
+}
+
+#info-container>form input[disabled] {
+    border: none;
+    background-color: transparent;
+}
+
+#info-container>form fieldset {
+    border: 2px solid var(--dark-blue);
+    border-radius: 7px;
+    padding: 10px;
+}
+
+#info-container>form>fieldset legend {
+    font-weight: bold;
+    text-align: center;
+}
+
+#app-info-form input[type="color"] {
+    border: none;
+    margin-right: calc(50% - 45px);
+}

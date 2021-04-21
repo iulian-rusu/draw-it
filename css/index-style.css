@@ -1,0 +1,82 @@
+#left-div {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	min-width: 350px;
+	min-height: 100%;
+	align-items: center;
+	background-image: url("../resources/splash.png");
+	background-size: cover;
+}
+
+#right-div {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    min-width: 450px;
+    align-items: center;
+}
+
+#front-page-container>* {
+    padding: 10px;
+}
+
+#left-div>*, #right-div>* {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#sign-in-div {
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sign-in-form {
+    width: 300px;
+	text-align: center;
+    background-color: transparent;
+}
+
+#sign-in-form>input {
+	border: 2px solid var(--dark-blue);
+	border-radius: 7px;
+    width: 200px;
+    background-color: hsla(0, 0%, 100%, 0.5);
+}
+
+#register-form {
+    border: 2px solid var(--dark-blue);
+    border-radius: 14px;
+    width: 400px;
+    padding: 20px;
+}
+
+#register-form>input {
+	border-bottom: 2px solid var(--dark-blue);
+}
+
+#register-button {
+    background-color: var(--dark-blue);
+    color: var(--bg-color);
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+#register-button:hover {
+    box-shadow: 5px 5px 0px var(--dark-blue);
+    animation-name: reg-button-anim;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes reg-button-anim {
+    to {
+        background-color: var(--light-blue);
+        color: var(--dark-blue);
+        border-color: var(--light-blue);
+    }
+}
+
+#sign-in-form>*, #register-form>* {
+    margin: 10px;
+}

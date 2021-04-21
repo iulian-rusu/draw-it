@@ -1,0 +1,47 @@
+.menu-bar {
+    position: absolute;
+    align-self: flex-end;
+    text-align: center;
+    margin: 20px;
+}
+
+.menu-bar a {
+    text-decoration: none;
+    font-size: large;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: var(--dark-blue);
+}
+
+.menu-bar a:hover {
+    animation-name: menu-bar-anim;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes menu-bar-anim {
+    to {
+        color: var(--bg-color);
+        font-weight: bold;
+    }
+}
+
+.menu-bar .current-page-link {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 900px) {
+    .menu-bar {
+        margin-bottom: 10px;
+    }
+    .logo-header {
+        flex-direction: row;
+        height: 120px;
+        max-height: 120px;
+    }
+
+    .container {
+        top: 120px;
+    }
+}

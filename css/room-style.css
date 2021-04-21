@@ -1,0 +1,192 @@
+#room-page-container>* {
+    margin: 5px;
+}
+
+#room-members {
+    width: calc(25% - 5px);
+}
+
+#drawing-space {
+    width: 50%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+}
+
+#toolbar {
+    height: 200px;
+    max-width: 95%;
+    display: flex;
+    align-self: center;
+}
+
+#toolbar>* {
+    width: fit-content;
+    align-self: center;
+}
+
+#toolbar>label {
+    text-align: right;
+    margin-left: 20px;
+    padding-right: 5px;
+}
+
+.tool-label:hover {
+    color: var(--dark-blue);
+    font-weight: bold;
+}
+
+#toolbar>input[type="color"] {
+    width: 60px;
+}
+
+#toolbar>input[type="range"] {
+    width: 200px;
+    margin-left: 0px;
+}
+
+#toolbar>input[type="radio"] {
+    padding-left: 5px;
+    width: auto;
+}
+
+#canvas {
+    background-color: var(--light-gray);
+    border-radius: 7px;
+    width: 100%;
+    height: 100%;
+    min-height: 90%;
+}
+
+#room-creator {
+	color: var(--highlight);
+}
+
+#chat {
+    width: calc(25% - 5px);
+}
+
+@media screen and (max-width: 900px) {
+    #drawing-space {
+        order: 0;
+        margin-bottom: 20px;
+    }
+
+    #canvas {
+        min-height: 100%;
+    }
+
+    #toolbar {
+        margin-top: 10px;
+    }
+
+    #chat {
+        order: 1;
+        height: 450px;
+    }
+
+    #room-members {
+        order: 2;
+    }
+
+    #chat-input-form {
+        flex-direction: row !important;
+        width: 100%;
+    }
+
+    #chat-input-form>* {
+        margin-bottom: 0;
+    }
+
+    #chat-input-box {
+        height: 100% !important;
+        width: 70% !important;
+    }
+
+    #chat-submit-button  {
+        width: 25% !important;
+    }
+}
+
+#room-members-table td {
+    max-width: 120px;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-messages {
+    height: calc(75% - 10px);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+#message-list {
+    align-self: flex-start;
+    list-style-type: none;
+}
+
+.chat-message {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.chat-message-body {
+    padding: 7px;
+    background-color: var(--light-gray);
+    border-radius: 14px;
+    border-top-left-radius: 0;
+}
+
+.chat-message-body p {
+    word-wrap: break-word;
+}
+
+#message-list .chat-message-name {
+    font-weight: bold;
+    color: var(--dark-blue);
+}
+
+#chat-input-form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    height: calc(30% - 10px);
+    max-height: 100%;
+    width: 100%;
+}
+
+#chat-input-form>* {
+    padding: 5px;
+    margin: 5px;
+    max-width: calc(100% - 10px);
+    max-height: calc(100% - 10px);
+}
+
+#chat-input-box {
+    margin-top: 10px;
+    padding: 7px;
+    width: 100%;
+    height: 45%;
+    resize: none;
+    overflow: auto;
+    background-color: var(--light-gray);
+    border-radius: 14px;
+}
+
+#chat-input-box:focus {
+    outline: none;
+}
+
+#chat-submit-button {
+    width: 100%;
+    max-width: 200px;
+    align-self: center;
+}
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base-style.css">
+    <link rel="stylesheet" href="css/header-menu.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/account-style.css">
+    <link rel="shortcut icon" type="image/jpg" href="resources/favicon.ico" />
+</head>
+
+<body>
+    <header class="logo-header">
+        <div class="logo">
+            <img src="resources/logo.png" alt="logo">
+            <h1 class="title"><b>Draw It!</b></h1>
+        </div>
+        <div class="menu-bar">
+            <a href="index.html">Log Out</a>
+            <a href="home.html">Home</a>
+            <a href="account.html" class="current-page-link">Account</a>
+        </div>
+    </header>
+    <div class="container" id="account-page-container">
+        <div id="info-container">
+            <form id="personal-info-form" method="post">
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    <label>First Name</label>
+                    <input type="text" placeholder="first name" autocomplete="off" name="first-name" />
+                    <br />
+                    <label>Last Name</label>
+                    <input type="text" placeholder="last name" autocomplete="off" name="last-name" />
+                    <br />
+                    <label>Username</label>
+                    <input type="text" value="admin" disabled />
+                    <br />
+                    <div class="form-buttons">
+                        <input type="submit" value="Edit" id="edit-personal-info-button" />
+                    </div>
+                </fieldset>
+            </form>
+            <form id="app-info-form">
+                <fieldset>
+                    <legend>App Information</legend>
+                    <label>Rooms Joined</label>
+                    <input type="number" value="3" disabled />
+                    <br />
+                    <label>Messages Sent</label>
+                    <input type="number" value="44" disabled />
+                    <br />
+                    <label>Username Color</label>
+                    <input type="color" value="#003264" name="username-color" id="username-color"
+                        list="available-colors">
+                    <datalist id="available-colors">
+                        <option>#003264</option>
+                        <option>#ff0000</option>
+                        <option>#00e800</option>
+                        <option>#ff00ff</option>
+                        <option>#ff8844</option>
+                    </datalist>
+                </fieldset>
+            </form>
+        </div>
+        <div id="my-rooms-container">
+            <h3>My Rooms</h3>
+            <div id="my-rooms-table-container">
+                <table class="styled-table" id="my-rooms">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Creation Date</th>
+                            <th>Members</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test room</td>
+                            <td>14 Mar 2021 12:04</td>
+                            <td>9/10</td>
+                            <td><input class='delete-room-button' type='button' value='Delete' /></td>
+                        </tr>
+                        <tr>
+                            <td>Test 1</td>
+                            <td>13 Mar 2021 15:55</td>
+                            <td>2/8</td>
+                            <td><input class='delete-room-button' type='button' value='Delete' /></td>
+                        </tr>
+                        <tr>
+                            <td>Test 2</td>
+                            <td>13 Mar 2021 15:12</td>
+                            <td>0/2</td>
+                            <td><input class='delete-room-button' type='button' value='Delete' /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p id="copyright">Copyright &copy; 2021 Iulian Rusu. All Rights Reserved.</p>
+    </footer>
+</body>
+
+</html>

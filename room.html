@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base-style.css">
+    <link rel="stylesheet" href="css/header-menu.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/room-style.css">
+    <link rel="shortcut icon" type="image/jpg" href="resources/favicon.ico"/>
+</head>
+
+<body>
+    <script src="js/canvas.js" type="text/javascript"></script>
+    <header class="logo-header">
+        <div class="logo">
+            <img src="resources/logo.png" alt="logo">
+            <h1 class="title"><b>Draw It!</b></h1>
+        </div>
+        <div class="menu-bar">
+            <a href="index.html">Log Out</a>
+            <a href="home.html" >Home</a>
+            <a href="account.html">Account</a>
+        </div>
+    </header>
+    <div class="container" id="room-page-container">
+       <div id="room-members">
+           <table class="styled-table" id="room-members-table">
+               <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Role</th>
+                    </tr>
+               </thead>
+               <tbody>
+                    <tr id="room-creator">
+                        <td>user1</td>
+                        <td>creator</td>
+                    </tr>
+                    <tr>
+                        <td>user2</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user3</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user4</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user5</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>very_long_username_123213123123123123</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user7</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user8</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user9</td>
+                        <td>guest</td>
+                    </tr>
+                    <tr>
+                        <td>user10</td>
+                        <td>guest</td>
+                    </tr>
+                </tbody>
+           </table>
+       </div>
+       <div id="drawing-space">
+            <canvas id="canvas" width="700" height="500">
+            </canvas>
+            <div id="toolbar">
+                <input type="color" id="drawing-color" list="available-colors" />
+                <datalist id="available-colors">
+                    <option>#000000</option>
+                    <option>#ffffff</option>
+                    <option>#ff0000</option>
+                    <option>#00ff00</option>
+                    <option>#0000ff</option>
+                    <option>#ffff00</option>
+                    <option>#00ffff</option>
+                    <option>#ff00ff</option>
+                    <option>#4488ff</option>
+                    <option>#ff8844</option>
+                  </datalist>
+                <label for="brush-radio" class="tool-label">Brush</label>
+                <input type="radio" id="brush-radio" name="paint-tool" checked/>
+                <label for="eraser-radio" class="tool-label">Eraser</label>
+                <input type="radio" id="eraser-radio" name="paint-tool"/>
+                <label for="tool-size">Size</label>
+                <input type="range" id="tool-size" min="1" max="20" step="1" value="10"/>
+            </div>
+       </div>
+       <div id="chat">
+           <div id="chat-messages">
+                <ul id="message-list">
+                    <li>
+                        <div class="chat-message">
+                            <div class="chat-message-name">
+                                <p>user1</p>
+                            </div>
+                            <div class="chat-message-body">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus, metus in aliquam lobortis, mauris massa tempor nisi, ornare molestie dui sapien nec libero. Suspendisse tortor metus, pretium eget fringilla vitae, auctor a magna. Mauris eu tincidunt diam, sit amet scelerisque est. Praesent non dictum tortor. In hac habitasse platea dictumst. Duis et leo purus. Maecenas a ante hendrerit, elementum felis tincidunt, mattis lacus. Nullam auctor vulputate odio, sed eleifend tortor eleifend ut. Donec et felis posuere, tincidunt lectus sagittis, luctus odio.
+
+                                    Ut at venenatis enim, at congue erat. Duis mattis nec erat eu suscipit. Maecenas suscipit elementum efficitur. Vestibulum feugiat risus vel tortor tincidunt, sed lacinia orci porta. Aenean at orci sed dui blandit mollis quis eu sem. Nullam hendrerit elit elit, eu aliquam felis tristique id. Vestibulum eu fringilla mauris. In molestie dui ut metus ornare egestas. Nunc malesuada id massa at mollis.
+                                    
+                                    Sed eu nulla vitae nulla maximus consectetur et id odio. Vivamus aliquam felis vulputate consectetur auctor. Donec at est ligula. Nam vulputate malesuada enim nec venenatis. Vestibulum interdum dolor eget dui porttitor, id consectetur augue gravida. Ut elementum leo ac mi sodales, sed tristique tellus finibus. Aenean aliquam sollicitudin consectetur. Aliquam et turpis maximus, eleifend erat eu, vulputate purus. Pellentesque mattis neque eu sodales condimentum. Morbi interdum sapien eu ante varius, nec malesuada dui bibendum. Suspendisse facilisis turpis consequat, facilisis mauris ut, finibus leo. Proin eu tellus non ex iaculis vestibulum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc iaculis porttitor varius. Aliquam erat volutpat.
+                                    
+                                    Nunc dignissim pretium mauris. Curabitur id felis et mi bibendum dapibus. Etiam non vehicula lorem. Nulla convallis varius tellus pharetra pellentesque. Sed leo elit, placerat a hendrerit quis, molestie luctus purus. Curabitur ac scelerisque felis. Nunc lorem metus, tristique varius tortor nec, viverra mollis odio. Curabitur est nisl, efficitur a turpis quis, mattis facilisis odio. Mauris finibus, eros sit amet sodales sodales, felis ex volutpat nunc, non bibendum felis mi eget enim. Aenean ut eros a massa condimentum gravida. In volutpat rhoncus tellus vitae tincidunt. Pellentesque sed turpis id eros tincidunt pharetra ac in quam. Mauris varius, tellus ut dignissim elementum, ante turpis faucibus mi, sed suscipit erat ipsum vel libero.
+                                    
+                                    Aenean sed dui mattis, dapibus orci sed, bibendum metus. Sed egestas tellus quis magna pellentesque, in rhoncus felis tincidunt. Aliquam accumsan quis felis ut volutpat. Vestibulum dignissim varius diam, quis tincidunt ipsum. Morbi a consectetur libero. Phasellus ut dolor posuere, cursus dolor ac, vehicula nisl. Cras tristique orci sagittis facilisis commodo.
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-message">
+                            <div class="chat-message-name">
+                                <p>user2</p>
+                            </div>
+                            <div class="chat-message-body">
+                                <p>hi!</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+           </div>
+            <form id="chat-input-form">
+                <textarea name="message" id="chat-input-box" cols="30" rows="10" placeholder="write a message" ></textarea>
+                <input type="submit" id="chat-submit-button" value="Send">
+            </form>
+       </div>
+    </div>
+    <footer>
+        <p id="copyright">Copyright &copy; 2021 Iulian Rusu. All Rights Reserved.</p>
+    </footer>
+</body>
+
+</html>
