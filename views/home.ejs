@@ -1,0 +1,49 @@
+<div id="rooms-container">
+    <h3>All Rooms</h3>
+    <div id="room-table-container">
+        <table class="styled-table" id="rooms">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Creator</th>
+                    <th>Members</th>
+                    <th></td>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < rooms.length; ++i) { %>
+                    <tr>
+                        <td><%= rooms[i].name %></td>
+                        <td><%= rooms[i].creator %></td>
+                        <td><%= rooms[i].currentMembers %>/<%= rooms[i].maxMembers %></td>
+                        <td><input class='join-room-button' type='button' value='Join' /></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="controls-container">
+    <h3>Controls</h3>
+    <form id="search-form" method="POST">
+        <fieldset id="search-room-fieldset">
+            <legend>Search Room</legend>
+            <input type="text" id="room-search-bar" placeholder="room name" autocomplete="off" name="room" />
+            <input type="submit" value="Search" id="search-room-button" />
+        </fieldset>
+    </form>
+    <form id="create-form" method="POST">
+        <fieldset>
+            <legend>Create Room</legend>
+            <label>Room Name</label>
+            <input type="text" placeholder="room name" autocomplete="off" name="room-name" />
+            <br />
+            <label>Max Members</label>
+            <input type="number" placeholder="1 - 10" autocomplete="off" name="max-members" />
+            <br />
+            <div class="form-buttons">
+                <input type="submit" value="Create" id="create-room-button" />
+            </div>
+        </fieldset>
+    </form>
+</div>

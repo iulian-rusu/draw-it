@@ -1,0 +1,65 @@
+<div id="info-container">
+    <form id="personal-info-form" method="post">
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label>First Name</label>
+            <input type="text" placeholder="first name" autocomplete="off" name="first-name" />
+            <br />
+            <label>Last Name</label>
+            <input type="text" placeholder="last name" autocomplete="off" name="last-name" />
+            <br />
+            <label>Username</label>
+            <input type="text" value="admin" disabled />
+            <br />
+            <div class="form-buttons">
+                <input type="submit" value="Edit" id="edit-personal-info-button" />
+            </div>
+        </fieldset>
+    </form>
+    <form id="app-info-form">
+        <fieldset>
+            <legend>App Information</legend>
+            <label>Rooms Joined</label>
+            <input type="number" value="3" disabled />
+            <br />
+            <label>Messages Sent</label>
+            <input type="number" value="44" disabled />
+            <br />
+            <label>Username Color</label>
+            <input type="color" value="#003264" name="username-color" id="username-color"
+                list="available-colors">
+            <datalist id="available-colors">
+                <option>#003264</option>
+                <option>#ff0000</option>
+                <option>#00e800</option>
+                <option>#ff00ff</option>
+                <option>#ff8844</option>
+            </datalist>
+        </fieldset>
+    </form>
+</div>
+<div id="my-rooms-container">
+    <h3>My Rooms</h3>
+    <div id="my-rooms-table-container">
+        <table class="styled-table" id="my-rooms">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Creation Date</th>
+                    <th>Members</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < userRooms.length; ++i) { %>
+                    <tr>
+                        <td><%= userRooms[i].name %></td>
+                        <td><%= userRooms[i].creationDate %></td>
+                        <td><%= userRooms[i].currentMembers %>/<%= userRooms[i].maxMembers %></td>
+                        <td><input class='delete-room-button' type='button' value='Delete' /></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

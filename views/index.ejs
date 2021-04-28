@@ -1,0 +1,45 @@
+<div id="left-div">
+    <div id="description-div">
+        <h3><b>Draw It!</b> is a chat room app with an interactive drawing board.</h3>
+        <p>Everyone can chat and draw on the same board in real time.</p>
+        <p>Just create a room and let your friends join!</p>
+    </div>
+    <div id="sign-in-div">
+        <form id="sign-in-form" method="POST" action="/log-in">
+            <input type="text" placeholder="username" autocomplete="off" name="username" />
+            <br />
+            <input type="password" placeholder="password" autocomplete="off" name="password" />
+            <br />
+            <div class="form-buttons"> 
+                <input type="submit" value="Sign In" id="sign-in-button" />
+            </div>
+        </form>
+    </div>
+</div>
+<div id="right-div">
+    <div id="register-text-div">
+        <h3>Don't have an account yet? Register now for free!</h3>
+    </div>
+    <div id="register-div">
+        <form id="register-form" method="POST" action="/register">
+            <label>First Name</label>
+            <input type="text" placeholder="first name" autocomplete="off" name="first-name" />
+            <br />
+            <label>Last Name</label>
+            <input type="text" placeholder="last name" autocomplete="off" name="last-name" />
+            <br />
+            <label>Username</label>
+            <input type="text" placeholder="username" autocomplete="off" name="username" />
+            <br />
+            <label>Password</label>
+            <input type="password" placeholder="password" autocomplete="off" name="password" />
+            <br />
+            <label>Confirm Password</label>
+            <input type="password" placeholder="confirm password" autocomplete="off" name="password-confirm" />
+            <br />
+            <div class="form-buttons">
+                <input type="submit" value="Register" id="register-button" />
+            </div>
+        </form>
+    </div>
+</div>
