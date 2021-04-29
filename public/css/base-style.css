@@ -32,6 +32,10 @@ legend {
     color: var(--dark-blue);
 }
 
+.error-placeholder-color::placeholder {
+    color: red;
+}
+
 .logo-header {
     display: flex;
     flex-direction: column;

@@ -1,3 +1,4 @@
+<script src="js/index.js" type="text/javascript"></script>
 <div id="left-div">
     <div id="description-div">
         <h3><b>Draw It!</b> is a chat room app with an interactive drawing board.</h3>
@@ -6,9 +7,9 @@
     </div>
     <div id="sign-in-div">
         <form id="sign-in-form" method="POST" action="/log-in">
-            <input type="text" placeholder="username" autocomplete="off" name="username" />
+            <input type="text" placeholder="username" autocomplete="off" name="username" id="sign-in-username" />
             <br />
-            <input type="password" placeholder="password" autocomplete="off" name="password" />
+            <input type="password" placeholder="password" autocomplete="off" name="password" id="sign-in-password" />
             <br />
             <div class="form-buttons"> 
                 <input type="submit" value="Sign In" id="sign-in-button" />
@@ -23,19 +24,19 @@
     <div id="register-div">
         <form id="register-form" method="POST" action="/register">
             <label>First Name</label>
-            <input type="text" placeholder="first name" autocomplete="off" name="first-name" />
+            <input type="text" placeholder="first name" autocomplete="off" name="first-name" id="first-name" />
             <br />
             <label>Last Name</label>
-            <input type="text" placeholder="last name" autocomplete="off" name="last-name" />
+            <input type="text" placeholder="last name" autocomplete="off" name="last-name" id="last-name"/>
             <br />
             <label>Username</label>
-            <input type="text" placeholder="username" autocomplete="off" name="username" />
+            <input type="text" placeholder="username" autocomplete="off" name="username" id="username" />
             <br />
             <label>Password</label>
-            <input type="password" placeholder="password" autocomplete="off" name="password" />
+            <input type="password" placeholder="password" autocomplete="off" name="password" id="password" />
             <br />
             <label>Confirm Password</label>
-            <input type="password" placeholder="confirm password" autocomplete="off" name="password-confirm" />
+            <input type="password" placeholder="confirm password" autocomplete="off" name="password-confirm" id="password-confirm" />
             <br />
             <div class="form-buttons">
                 <input type="submit" value="Register" id="register-button" />

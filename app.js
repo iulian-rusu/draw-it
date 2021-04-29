@@ -1,16 +1,30 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
-const utility = require("./modules/utility")
-
+const utility = require("./modules/utility");
+const model = require("./modules/model");
+const { User } = require('./modules/model');
 const app = express();
+const db = new model.DBAccess()
+
+function insertTestData(db) {
+    const testUser = new model.User("test", "Test FN", "Test LN", "testtest");
+    const testRoom1 = new model.Room("room1", "test", 10);
+    const testRoom2 = new model.Room("room two", "test", 2);
+
+    db.addUser(testUser);
+    db.addRoom(testRoom1);
+    db.addRoom(testRoom2);
+}
+
+insertTestData(db);
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressLayouts);
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.render('index', {
@@ -29,7 +43,7 @@ app.get('/home', (req, res) => {
         styleList: ["tables.css", "home-style.css"],
         currentPageLink: "home",
         containerId: "home-page-container",
-        rooms: utility.getAllRooms()
+        rooms: db.searchRooms()
     });
 });
 
@@ -40,8 +54,8 @@ app.get('/account', (req, res) => {
         styleList: ["tables.css", "account-style.css"],
         currentPageLink: "account",
         containerId: "account-page-container",
-        user: utility.getUser("placeholder-username"),
-        userRooms: utility.getUserRooms("placeholder-username")
+        user: db.getUser("test"),
+        userRooms: db.getUserRooms("test")
     });
 });
 
@@ -57,67 +71,84 @@ app.get('/room', (req, res) => {
     });
 });
 
-app.post("/log-in", (req, res) => { res.redirect("/home") });
-app.post("/register", (req, res) => { res.redirect("/home") });
+app.post("/log-in", (req, res) => {
+    const username = req.body["username"];
+    const password = req.body["password"];
+    const user = db.getUser(username);
 
-app.get("/search-room", (req, res) => { 
+    if (user === null) {
+        res.redirect("/");
+        return;
+    }
+
+    if (user.password != password) {
+        res.redirect("/");
+        return;
+    }
+
+    res.redirect("/home");
+});
+
+app.post("/register", (req, res) => {
+    const username = req.body["username"];
+    const password = req.body["password"];
+    const passwordConfirm = req.body["password-confirm"];
+    const firstName = req.body["first-name"];
+    const lastName = req.body["last-name"];
+
+    if (password != passwordConfirm) {
+        res.redirect("/");
+        return;
+    }
+
+    if (db.userExists(username)) {
+        res.redirect("/");
+        return;
+    }
+
+    const newUser = new User(username, firstName, lastName, password);
+    db.addUser(newUser);
+
+    res.redirect("/home");
+});
+
+app.get("/search-room", (req, res) => {
     const roomName = req.query["room-name"].toLowerCase();
-    if(roomName.length === 0) {
+    if (roomName.length === 0) {
         res.redirect("/home");
+        return;
     }
-    const existingRooms = utility.getAllRooms();
-    const foundRooms = []
-    console.log(roomName);
-    for(let i=0; i<existingRooms.length; ++i) {
-        console.log(existingRooms[i].name);
-        if(existingRooms[i].name.toLowerCase().includes(roomName)) {
-            foundRooms.push(existingRooms[i]);
-        }
-    }
+
     res.render('home', {
         loadMenuBar: true,
         pageTitle: "Home",
         styleList: ["tables.css", "home-style.css"],
         currentPageLink: "home",
         containerId: "home-page-container",
-        rooms: foundRooms
+        rooms: db.searchRooms(roomName)
     });
 });
 
 app.post("/create-room", (req, res) => {
     const roomName = req.body["room-name"];
     let maxMembers = req.body["max-members"];
-    if(parseInt(maxMembers) > 10) {
+    if (parseInt(maxMembers) > 10) {
         maxMembers = "10";
     }
-    const author = "admin";
-    const existingRooms = utility.getAllRooms();
-    existingRooms.push({ name: roomName, creator: author, maxMembers: maxMembers, currentMembers: 0 });
-    res.render('home', {
-        loadMenuBar: true,
-        pageTitle: "Home",
-        styleList: ["tables.css", "home-style.css"],
-        currentPageLink: "home",
-        containerId: "home-page-container",
-        rooms: existingRooms
-    });
+    const author = "test";
+    const newRoom = new model.Room(roomName, author, maxMembers);
+    db.addRoom(newRoom);
+
+    res.redirect("/home");
 });
 
 app.post("/edit-account", (req, res) => {
-    let currentUser = utility.getUser("placeholder-username");
+    let currentUser = db.getUser("test");
     currentUser.firstName = req.body["first-name"];;
     currentUser.lastName = req.body["last-name"];;
     currentUser.usernameColor = req.body["username-color"];;
 
-    res.render('account', {
-        loadMenuBar: true,
-        pageTitle: "Account",
-        styleList: ["tables.css", "account-style.css"],
-        currentPageLink: "account",
-        containerId: "account-page-container",
-        user: currentUser,
-        userRooms: utility.getUserRooms("placeholder-username")
-    });
+    res.redirect("/account");
 });
 
 app.post("/send-message", (req, res) => {
