@@ -26,6 +26,12 @@ b {
     font-family: 'Pacifico', cursive;
 }
 
+legend {
+    padding-right: 5px;
+    padding-left: 5px;
+    color: var(--dark-blue);
+}
+
 .logo-header {
     display: flex;
     flex-direction: column;
