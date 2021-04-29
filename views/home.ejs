@@ -25,21 +25,21 @@
 </div>
 <div id="controls-container">
     <h3>Controls</h3>
-    <form id="search-form" method="POST">
+    <form id="search-form" action="/search-room">
         <fieldset id="search-room-fieldset">
             <legend>Search Room</legend>
-            <input type="text" id="room-search-bar" placeholder="room name" autocomplete="off" name="room" />
+            <input type="text" id="room-search-bar" placeholder="room name" autocomplete="off" name="room-name" />
             <input type="submit" value="Search" id="search-room-button" />
         </fieldset>
     </form>
-    <form id="create-form" method="POST">
+    <form id="create-form" method="POST" action="/create-room">
         <fieldset>
             <legend>Create Room</legend>
             <label>Room Name</label>
             <input type="text" placeholder="room name" autocomplete="off" name="room-name" />
             <br />
             <label>Max Members</label>
-            <input type="number" placeholder="1 - 10" autocomplete="off" name="max-members" />
+            <input type="number" placeholder="1 - 10" autocomplete="off" name="max-members" min="1" max="10" />
             <br />
             <div class="form-buttons">
                 <input type="submit" value="Create" id="create-room-button" />

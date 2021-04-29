@@ -72,6 +72,16 @@ module.exports = {
             }
         ]
     },
+    getUser: (username) => {
+        return {
+            firstName: "John",
+            lastName: "Smith",
+            username: username,
+            roomsJoined: "14",
+            messagesSent: "45",
+            usernameColor: "#003264"
+        }
+    },
     getUserRooms: (username) => {
         return [
             {

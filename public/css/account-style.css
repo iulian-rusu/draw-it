@@ -41,7 +41,6 @@
     }
 }
 
-
 #info-container>form input {
     border-bottom: 2px solid var(--dark-blue);
     margin: 5px 15px 5px 15px;
@@ -58,7 +57,7 @@
     padding: 10px;
 }
 
-#info-container>form>fieldset legend {
+#info-container fieldset legend {
     font-weight: bold;
     text-align: center;
 }

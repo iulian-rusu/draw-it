@@ -1,41 +1,42 @@
 <div id="info-container">
-    <form id="personal-info-form" method="post">
+    <form id="personal-info-form" method="POST" action="/edit-account">
         <fieldset>
             <legend>Personal Information</legend>
             <label>First Name</label>
-            <input type="text" placeholder="first name" autocomplete="off" name="first-name" />
+            <input type="text" value ="<%= user.firstName %>" placeholder="first name" autocomplete="off" name="first-name" />
             <br />
             <label>Last Name</label>
-            <input type="text" placeholder="last name" autocomplete="off" name="last-name" />
+            <input type="text" value ="<%= user.lastName %>" placeholder="last name" autocomplete="off" name="last-name" />
             <br />
             <label>Username</label>
-            <input type="text" value="admin" disabled />
+            <input type="text" value="<%= user.username %>" disabled />
             <br />
             <div class="form-buttons">
                 <input type="submit" value="Edit" id="edit-personal-info-button" />
             </div>
         </fieldset>
-    </form>
-    <form id="app-info-form">
-        <fieldset>
-            <legend>App Information</legend>
-            <label>Rooms Joined</label>
-            <input type="number" value="3" disabled />
-            <br />
-            <label>Messages Sent</label>
-            <input type="number" value="44" disabled />
-            <br />
-            <label>Username Color</label>
-            <input type="color" value="#003264" name="username-color" id="username-color"
-                list="available-colors">
-            <datalist id="available-colors">
-                <option>#003264</option>
-                <option>#ff0000</option>
-                <option>#00e800</option>
-                <option>#ff00ff</option>
-                <option>#ff8844</option>
-            </datalist>
-        </fieldset>
+        <br />
+        <div id="app-info-form" >
+            <fieldset>
+                <legend>App Information</legend>
+                <label>Rooms Joined</label>
+                <input type="number" value="<%= user.roomsJoined %>" disabled />
+                <br />
+                <label>Messages Sent</label>
+                <input type="number" value="<%= user.messagesSent %>" disabled />
+                <br />
+                <label>Username Color</label>
+                <input type="color" value="<%= user.usernameColor %>" name="username-color" id="username-color"
+                    list="available-colors">
+                <datalist id="available-colors">
+                    <option>#003264</option>
+                    <option>#ff0000</option>
+                    <option>#00e800</option>
+                    <option>#ff00ff</option>
+                    <option>#ff8844</option>
+                </datalist>
+            </fieldset>
+        </div>
     </form>
 </div>
 <div id="my-rooms-container">
