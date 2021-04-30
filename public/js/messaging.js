@@ -53,7 +53,7 @@ function scrollChatDown() {
     chatDiv.scrollTop = chatDiv.scrollHeight;
 }
 
-window.onload = () => {
+window.addEventListener("load", () => {
     scrollChatDown();
     clearMessageBox();
-};
+});
