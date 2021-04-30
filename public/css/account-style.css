@@ -57,12 +57,11 @@
     padding: 10px;
 }
 
-#info-container fieldset legend {
+#username {
     font-weight: bold;
-    text-align: center;
 }
 
-#app-info-form input[type="color"] {
+#app-info-fieldset input[type="color"] {
     border: none;
     margin-right: calc(50% - 45px);
 }

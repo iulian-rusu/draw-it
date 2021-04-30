@@ -128,6 +128,13 @@ form {
     text-align: right;
 }
 
+form fieldset legend {
+    font-weight: bold;
+    text-align: center;
+    border-left: 2px solid var(--dark-blue);
+    border-right: 2px solid var(--dark-blue);
+}
+
 .form-buttons {
     text-align: center;
 }

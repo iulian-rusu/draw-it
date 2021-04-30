@@ -66,9 +66,9 @@ function validateLength(element, minLength, errMsg) {
     return true;
 }
 
-window.addEventListener("load", () => {
+window.onload =  () => {
     const signInForm = document.getElementById("sign-in-form");
     signInForm.addEventListener("submit", (ev) => validateLoginInputs(ev));
     const registerForm = document.getElementById("register-form");
     registerForm.addEventListener("submit", (ev) => validateRegisterInputs(ev));
-});
+};

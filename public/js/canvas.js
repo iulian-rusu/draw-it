@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+window.onload = () => {
     const canvas = document.getElementById("canvas");
     const colorSelect = document.getElementById("drawing-color");
     const isBrushSelected = document.getElementById("brush-radio");
@@ -79,4 +79,4 @@ window.addEventListener("load", () => {
     canvas.addEventListener("mouseup", endStroke, false);
     canvas.addEventListener("mouseout", endStroke, false);
     canvas.addEventListener("mouseenter", onMouseEnter, false);
-});
+};

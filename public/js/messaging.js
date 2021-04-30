@@ -31,11 +31,12 @@ function clearMessageBox() {
 }
 
 function insertMessageInChat(username, message) {
+    const usernameColor = localStorage.getItem("username-color");
     const chat = document.getElementById("message-list");
     const newMessage = `            
     <li>
         <div class="chat-message">
-            <div class="chat-message-name">
+            <div class="chat-message-name" style="color: ${usernameColor}">
                 <p>${username}</p>
             </div>
             <div class="chat-message-body">
@@ -52,7 +53,7 @@ function scrollChatDown() {
     chatDiv.scrollTop = chatDiv.scrollHeight;
 }
 
-window.addEventListener("load", () => {
+window.onload = () => {
     scrollChatDown();
     clearMessageBox();
-});
+};
