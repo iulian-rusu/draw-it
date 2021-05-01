@@ -3,8 +3,12 @@ function setUsernameColor(value) {
 }
 
 function saveDataLocally() {
+    const username = document.getElementById("username").value;
+    const firstName = document.getElementById("first-name").value;
+    const lastName = document.getElementById("last-name").value;
     const color = document.getElementById("username-color").value;
-    localStorage.setItem("username-color", color);
+
+    localStorage[username] = {firstName: firstName, lastName: lastName, usernameColor: color};
 }
 
 window.onload = () => {

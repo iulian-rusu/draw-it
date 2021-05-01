@@ -9,12 +9,16 @@
             </tr>
         </thead>
         <tbody>
-            <% for(let i=0; i < roomMembers.length; ++i) { %>
-                <tr id=<%= roomMembers[i].id %>>
-                    <td><%= roomMembers[i].username %></td>
-                    <td><%= roomMembers[i].role %></td>
+            <% for(let i=0; i < room.members.length; ++i) { %>
+                <tr id=<%=room.members[i].id %>>
+                    <td>
+                        <%= room.members[i].username %>
+                    </td>
+                    <td>
+                        <%= room.members[i].role %>
+                    </td>
                 </tr>
-            <% } %>
+                <% } %>
         </tbody>
     </table>
 </div>
@@ -36,33 +40,43 @@
             <option>#ff8844</option>
         </datalist>
         <label for="brush-radio" class="tool-label">Brush</label>
-        <input type="radio" id="brush-radio" name="paint-tool" checked/>
+        <input type="radio" id="brush-radio" name="paint-tool" checked />
         <label for="eraser-radio" class="tool-label">Eraser</label>
-        <input type="radio" id="eraser-radio" name="paint-tool"/>
+        <input type="radio" id="eraser-radio" name="paint-tool" />
         <label for="tool-size">Size</label>
-        <input type="range" id="tool-size" min="1" max="20" step="1" value="10"/>
+        <input type="range" id="tool-size" min="1" max="20" step="1" value="10" />
     </div>
 </div>
 <div id="chat">
     <div id="chat-messages">
         <ul id="message-list">
-            <% for(let i=0; i < roomMessages.length; ++i) { %>
-            <li>
-                <div class="chat-message">
-                    <div class="chat-message-name"  style="color: <%= roomMessages[i].usernameColor %>">
-                        <p><%= roomMessages[i].username %></p>
+            <% for(let i=0; i < room.messages.length; ++i) { %>
+                <li>
+                    <div class="chat-message">
+                        <div class="chat-message-name" style="color: <%= room.messages[i].usernameColor %>">
+                            <p>
+                                <%= room.messages[i].username %>
+                            </p>
+                        </div>
+                        <div class="chat-message-body">
+                            <p>
+                                <%= room.messages[i].body %>
+                            </p>
+                        </div>
                     </div>
-                    <div class="chat-message-body">
-                        <p> <%= roomMessages[i].body %></p>
-                    </div>
-                </div>
-            </li>
-            <% } %>
+                </li>
+                <% } %>
         </ul>
     </div>
     <form id="chat-input-form">
-        <textarea name="message" id="chat-input-box" cols="30" rows="10" placeholder="write a message" onkeypress="onKeyPress()">
+        <textarea name="message" id="chat-input-box" cols="30" rows="10" placeholder="write a message"
+            onkeypress="onKeyPress()">
         </textarea>
         <input type="button" onclick="sendMessage()" id="chat-submit-button" value="Send" />
     </form>
+</div>
+<div class="hidden" id="meta-data">
+    <div id="username"><%= session.user.username %></div>
+    <div id="usernameColor"><%= session.user.usernameColor %></div>
+    <div id="room-name"><%= room.name %></div>
 </div>

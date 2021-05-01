@@ -3,7 +3,7 @@ function validateLoginInputs(ev) {
     const username = document.getElementById("sign-in-username");
     let isValid = true;
 
-    if (!validateLength(password, 8, "password too short")) {
+    if (!validateLength(password, 4, "password too short")) {
         isValid = false;
     }
 
@@ -13,9 +13,7 @@ function validateLoginInputs(ev) {
 
     if (!isValid) {
         ev.preventDefault();
-        return false;
     }
-    return false;
 }
 
 function validateRegisterInputs(ev) {
@@ -38,7 +36,7 @@ function validateRegisterInputs(ev) {
         isValid = false;
     }
 
-    if (!validateLength(password, 8, "password too short")) {
+    if (!validateLength(password, 4, "password too short")) {
         isValid = false;
     }
 
@@ -51,9 +49,7 @@ function validateRegisterInputs(ev) {
 
     if (!isValid) {
         ev.preventDefault();
-        return false;
     }
-    return false;
 }
 
 function validateLength(element, minLength, errMsg) {

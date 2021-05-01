@@ -36,6 +36,12 @@ legend {
     color: red;
 }
 
+.hidden {
+    display: none;
+    max-width: 0;
+    max-height: 0;
+}
+
 .logo-header {
     display: flex;
     flex-direction: column;

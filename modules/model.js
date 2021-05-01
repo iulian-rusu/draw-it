@@ -10,6 +10,22 @@ class User {
     }
 }
 
+class RoomMember {
+    constructor(id, username, role) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+    }
+}
+
+class RoomMessage {
+    constructor (username, usernameColor, body) {
+        this.username = username;
+        this.usernameColor = usernameColor;
+        this.body = body;
+    }
+}
+
 class Room {
     constructor(name, creator, maxMembers, currentMembers = 0) {
         this.name = name;
@@ -19,6 +35,8 @@ class Room {
         const d = new Date();
         const month = d.toLocaleString('default', { month: 'long' });
         this.creationDate = `${d.getDate()} ${month} ${d.getFullYear()}`;
+        this.members = []
+        this.messages = []
     }
 }
 
@@ -77,6 +95,15 @@ class DBAccess {
         this.roomDB = this.roomDB.filter(r => r.name != name);
     }
 
+    getRoom(name) {
+        for (let i = 0; i < this.roomDB.length; ++i) {
+            if (this.roomDB[i].name == name) {
+                return this.roomDB[i];
+            }
+        }
+        return null;
+    }
+
     roomExists(name) {
         for (let i = 0; i < this.roomDB.length; ++i) {
             if (this.roomDB[i].name == name) {
@@ -101,5 +128,7 @@ class DBAccess {
 module.exports = {
     DBAccess: DBAccess,
     User: User,
+    RoomMember: RoomMember,
+    RoomMessage: RoomMessage,
     Room: Room
 };
