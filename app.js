@@ -44,9 +44,10 @@ app.get("/search-room", routes.searchRoom(db));
 
 app.post("/log-in", routes.logIn(db));
 app.post("/register", routes.register(db));
+app.post("/post-message", routes.postMessage(db));
 app.post("/create-room", routes.createRoom(db));
+app.post("/delete-room", routes.deleteRoom(db));
 app.post("/edit-account", routes.editAccount(db));
-app.post("/send-message", (req, res) => { res.sendStatus(200); });
 
 const port = 7070;
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));

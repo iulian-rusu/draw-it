@@ -53,7 +53,7 @@
             <% for(let i=0; i < room.messages.length; ++i) { %>
                 <li>
                     <div class="chat-message">
-                        <div class="chat-message-name" style="color: <%= room.messages[i].usernameColor %>">
+                        <div class="chat-message-name" style="color: <%= colors[i] %>">
                             <p>
                                 <%= room.messages[i].username %>
                             </p>
@@ -77,6 +77,6 @@
 </div>
 <div class="hidden" id="meta-data">
     <div id="username"><%= session.user.username %></div>
-    <div id="usernameColor"><%= session.user.usernameColor %></div>
+    <div id="username-color"><%= session.user.usernameColor %></div>
     <div id="room-name"><%= room.name %></div>
 </div>

@@ -1,5 +1,6 @@
-const { RoomMember } = require("./model");
+const { RoomMember, RoomMessage } = require("./model");
 const model = require("./model");
+const utility = require("./utility");
 
 module.exports = {
     index: (req, res) => {
@@ -71,8 +72,10 @@ module.exports = {
             role = "creator";
             id = "creator";
         }
-        
-        room.members.push(new RoomMember(id, user.username, role));
+        if(!room.contains(user.username)) {
+            room.members.push(new RoomMember(id, user.username, role));
+        }
+
         res.render('room', {
             loadMenuBar: true,
             pageTitle: "Room",
@@ -80,6 +83,7 @@ module.exports = {
             currentPageLink: "room",
             containerId: "room-page-container",
             room: room,
+            colors: utility.calculateUsernameColors(db.getAllUsers(), room),
             session: req.session
         });
     },
@@ -147,6 +151,21 @@ module.exports = {
             rooms: db.searchRooms(roomName)
         });
     },
+    postMessage: (db) => (req, res) => {
+        const msgBody = req.body["body"];
+        const roomName = req.body["roomName"];
+        const username = req.body["username"];
+
+        if (roomName && msgBody && username) {
+            const room = db.getRoom(roomName);
+            if (room) {
+                room.messages.push(new RoomMessage(username, msgBody));
+                res.sendStatus(200);
+                return;
+            }
+        }
+        res.sendStatus(404);
+    },
     createRoom: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
@@ -163,6 +182,15 @@ module.exports = {
         db.addRoom(newRoom);
 
         res.redirect("/home");
+    },
+    deleteRoom: (db) => (req, res) => {
+        const roomName = req.body["name"];
+        if (roomName) {
+            db.removeRoom(roomName);
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(404);
+        }
     },
     editAccount: (db) => (req, res) => {
         const user = req.session.user;

@@ -8,8 +8,8 @@ function onKeyPress() {
 
 function sendMessage() {
     const username = document.getElementById("username").innerHTML;
-    const usernameColor = document.getElementById("usernameColor").innerHTML;
-
+    const roomName = document.getElementById("room-name").innerHTML;
+    const usernameColor = document.getElementById("username-color").innerHTML;
     const input = document.getElementById("chat-input-box");
     const message = input.value;
     if (message.length === 0) {
@@ -22,8 +22,15 @@ function sendMessage() {
             insertMessageInChat(username, usernameColor, message);
         }
     };
-    xhttp.open("POST", `/send-message`, true);
-    xhttp.send(`message=${message}`);
+
+    xhttp.open("POST", `/post-message`, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    const messageData = {
+        username: username,
+        body: message,
+        roomName: roomName
+    }
+    xhttp.send(JSON.stringify(messageData));
 
     clearMessageBox();
 }
@@ -59,3 +66,8 @@ window.addEventListener("load", () => {
     scrollChatDown();
     clearMessageBox();
 });
+
+window.onbeforeunload = () => {
+    const username = document.getElementById("username").innerHTML;
+    // notify leave room
+};

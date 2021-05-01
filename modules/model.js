@@ -19,57 +19,69 @@ class RoomMember {
 }
 
 class RoomMessage {
-    constructor (username, usernameColor, body) {
+    constructor (username, body) {
         this.username = username;
-        this.usernameColor = usernameColor;
+        this.usernameColor = "#000000";
         this.body = body;
     }
 }
 
 class Room {
-    constructor(name, creator, maxMembers, currentMembers = 0) {
+    constructor(name, creator, maxMembers) {
         this.name = name;
         this.creator = creator;
         this.maxMembers = maxMembers;
-        this.currentMembers = currentMembers;
+        this.members = []
+        this.messages = []
         const d = new Date();
         const month = d.toLocaleString('default', { month: 'long' });
         this.creationDate = `${d.getDate()} ${month} ${d.getFullYear()}`;
-        this.members = []
-        this.messages = []
+    }
+
+    get currentMembers() {
+        return this.members.length;
+    }
+
+    contains(username) {
+        for (let i = 0; i < this.members.length; ++i) {
+            if (this.members[i].username == username) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
 class DBAccess {
     constructor() {
-        this.usersDB = [];
+        this.userDB = [];
         this.roomDB = [];
     }
 
     addUser(user) {
         if (!this.userExists(user.username)) {
-            this.usersDB.push(user);
+            this.userDB.push(user);
             return true;
         }
         return false;
     }
 
     removeUser(username) {
-        this.userDB = this.usersDB.filter(u => u.username != username);
+        this.userDB = this.userDB.filter(u => u.username != username);
     }
 
     getUser(username) {
-        for (let i = 0; i < this.usersDB.length; ++i) {
-            if (this.usersDB[i].username == username) {
-                return this.usersDB[i];
+        for (let i = 0; i < this.userDB.length; ++i) {
+            if (this.userDB[i].username == username) {
+                return this.userDB[i];
             }
         }
         return null
     }
 
     userExists(username) {
-        for (let i = 0; i < this.usersDB.length; ++i) {
-            if (this.usersDB[i].username == username) {
+        for (let i = 0; i < this.userDB.length; ++i) {
+            if (this.userDB[i].username == username) {
                 return true;
             }
         }
@@ -77,7 +89,7 @@ class DBAccess {
     }
 
     getAllUsers(username) {
-        if (typeof (username) === undefined) {
+        if (!username) {
             return this.userDB;
         }
         return this.userDB.filter(u => u.username == username);
@@ -92,7 +104,10 @@ class DBAccess {
     }
 
     removeRoom(name) {
+        console.log(name);
+        console.log(this.roomDB);
         this.roomDB = this.roomDB.filter(r => r.name != name);
+        console.log(this.roomDB);
     }
 
     getRoom(name) {
