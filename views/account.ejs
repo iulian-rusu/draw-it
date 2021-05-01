@@ -47,8 +47,9 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Creation Date</th>
+                    <th>Created</th>
                     <th>Members</th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -64,6 +65,7 @@
                         <td>
                             <%= userRooms[i].currentMembers %>/<%= userRooms[i].maxMembers %>
                         </td>
+                        <td><input class='join-room-button' type='button' value='Join' /></td>
                         <td><input class='delete-room-button' type='button' value='Delete' /></td>
                     </tr>
                     <% } %>

@@ -6,6 +6,10 @@
     min-width: calc(100% - 40px);
 }
 
+.styled-table tbody td input {
+    width: 70%;
+}
+
 .styled-table td, .styled-table th {
     text-align: center;
     margin: 5px;

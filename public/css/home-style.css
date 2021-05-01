@@ -63,3 +63,9 @@
     width: 200px;
     align-self: center;
  }
+
+ @media screen and (min-width: 900px) and (max-width: 1200px) {
+    #create-form label, #create-form input {
+        width: 200px;
+    }
+}

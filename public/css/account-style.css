@@ -25,7 +25,6 @@
 #my-rooms .delete-room-button {
     border-color: var(--highlight);
     color: var(--highlight);
-    width: 70%;
 }
 
 #my-rooms .delete-room-button:hover {

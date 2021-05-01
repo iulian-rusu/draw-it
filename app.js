@@ -40,4 +40,4 @@ app.post("/edit-account", requests.editAccount(db));
 app.post("/send-message", (req, res) => { res.sendStatus(200); });
 
 const port = 7070;
-app.listen(port, () => console.log(`Server running on http://localhost: ${port}`));
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
