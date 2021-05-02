@@ -2,11 +2,11 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const utility = require("./modules/utility");
 const model = require("./modules/model");
+const database = require("./modules/database");
 const routes = require("./modules/routes");
 
-const db = new model.DBAccess()
+const db = new database.DBAccess()
 const app = express();
 
 function insertTestData(db) {

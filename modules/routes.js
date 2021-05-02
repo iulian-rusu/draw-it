@@ -1,6 +1,9 @@
-const { RoomMember, RoomMessage } = require("./model");
+/*
+    routes.js - contains the controller logic for all application routes
+*/
+
+const { RoomMessage } = require("./model");
 const model = require("./model");
-const utility = require("./utility");
 
 module.exports = {
     index: (req, res) => {
@@ -66,16 +69,7 @@ module.exports = {
         }
 
         const room = db.getRoom(roomName);
-        let role = "guest";
-        let id = "guest-" + room.members.length + 1;
-        if (room.creator == user.username) {
-            role = "creator";
-            id = "creator";
-        }
-        if(!room.contains(user.username)) {
-            room.members.push(new RoomMember(id, user.username, role));
-        }
-
+        room.addMember(user);
         res.render('room', {
             loadMenuBar: true,
             pageTitle: "Room",
@@ -83,7 +77,6 @@ module.exports = {
             currentPageLink: "room",
             containerId: "room-page-container",
             room: room,
-            colors: utility.calculateUsernameColors(db.getAllUsers(), room),
             session: req.session
         });
     },
@@ -158,8 +151,9 @@ module.exports = {
 
         if (roomName && msgBody && username) {
             const room = db.getRoom(roomName);
-            if (room) {
-                room.messages.push(new RoomMessage(username, msgBody));
+            const user = db.getUser(username);
+            if (room && user) {
+                room.messages.push(new RoomMessage(user, msgBody));
                 res.sendStatus(200);
                 return;
             }

@@ -12,7 +12,7 @@
             <% for(let i=0; i < room.members.length; ++i) { %>
                 <tr id=<%=room.members[i].id %>>
                     <td>
-                        <%= room.members[i].username %>
+                        <%= room.members[i].user.username %>
                     </td>
                     <td>
                         <%= room.members[i].role %>
@@ -53,9 +53,9 @@
             <% for(let i=0; i < room.messages.length; ++i) { %>
                 <li>
                     <div class="chat-message">
-                        <div class="chat-message-name" style="color: <%= colors[i] %>">
+                        <div class="chat-message-name" style="color: <%= room.messages[i].user.usernameColor %>">
                             <p>
-                                <%= room.messages[i].username %>
+                                <%= room.messages[i].user.username %>
                             </p>
                         </div>
                         <div class="chat-message-body">
