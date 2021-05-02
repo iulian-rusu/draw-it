@@ -8,6 +8,7 @@ const utility = require("./utility");
 const crypto = require("bcrypt");
 const saltRounds = 10;
 let errors = [];
+const pleaseLogInMessage = "You must be logged in to do that";
 
 module.exports = {
     index: (req, res) => {
@@ -33,7 +34,7 @@ module.exports = {
     home: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
+            errors.push(pleaseLogInMessage);
             res.redirect("/");
             return;
         }
@@ -53,7 +54,7 @@ module.exports = {
     account: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
+            errors.push(pleaseLogInMessage);
             res.redirect("/");
             return;
         }
@@ -74,22 +75,25 @@ module.exports = {
     room: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
-            res.redirect("/");
-            return;
+            errors.push(pleaseLogInMessage);
         }
 
         const roomName = req.query["name"];
         if (!roomName) {
-            errors = ["Invalid room"];
+            errors.push("No room specified");
             res.redirect("/");
             return;
         }
 
         const room = db.getRoom(roomName);
-        if(!room) {
-            errors = ["Invalid room"];
+        if (!room) {
+            errors.push("Room doesn't exist");
             res.redirect("/home");
+            return;
+        }
+
+        if (errors.length > 0) {
+            res.redirect("/");
             return;
         }
 
@@ -112,17 +116,18 @@ module.exports = {
         const user = db.getUser(username);
 
         if (user === null) {
-            errors = ["You must be logged in"];
+            errors.push("Bad credentials");
             res.redirect("/");
             return;
         }
 
         const isSamePassword = await crypto.compare(password, user.password);
         if (!isSamePassword) {
-            errors = ["Failed to log in"];
+            errors.push("Bad credentials");
             res.redirect("/");
             return;
         }
+
         // remember user details in session
         req.session.user = user;
 
@@ -135,22 +140,29 @@ module.exports = {
         const firstName = req.body["first-name"];
         const lastName = req.body["last-name"];
 
-        if (!(utility.validateName(firstName) && utility.validateName(lastName) && utility.validatePassword(password))) {
-            errors = ["Please enter valid values"];
-            res.redirect("/");
-            return;
+        if (!utility.validateName(firstName)) {
+            errors.push("First name is invalid");
+        }
+
+        if (!utility.validateName(lastName)) {
+            errors.push("Last name is invalid");
+        }
+
+        if (!utility.validatePassword(password)) {
+            errors.push("Password too short");
         }
 
         if (password != passwordConfirm) {
-            errors = ["Passwords don't match"];
-            res.redirect("/");
-            return;
+            errors.push("Passwords don't match");
         }
 
         const hashedPassword = await crypto.hash(password, saltRounds);
 
         if (db.userExists(username)) {
-            errors = [`Username '${username}' is already taken`];
+            errors.push(`Username '${username}' is already taken`);
+        }
+
+        if (errors.length > 0) {
             res.redirect("/");
             return;
         }
@@ -165,7 +177,7 @@ module.exports = {
     searchRoom: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
+            errors.push(pleaseLogInMessage);
             res.redirect("/");
             return;
         }
@@ -209,7 +221,7 @@ module.exports = {
     createRoom: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
+            errors.push(pleaseLogInMessage);
             res.redirect("/");
             return;
         }
@@ -240,7 +252,7 @@ module.exports = {
     editAccount: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
-            errors = ["You must be logged in"];
+            errors.push(pleaseLogInMessage);
             res.redirect("/");
             return;
         }
