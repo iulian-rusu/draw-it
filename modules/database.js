@@ -54,10 +54,7 @@ class DBAccess {
     }
 
     removeRoom(name) {
-        console.log(name);
-        console.log(this.roomDB);
         this.roomDB = this.roomDB.filter(r => r.name != name);
-        console.log(this.roomDB);
     }
 
     getRoom(name) {

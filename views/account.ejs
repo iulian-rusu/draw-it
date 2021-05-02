@@ -66,10 +66,12 @@
                         <td>
                             <%= userRooms[i].currentMembers %>/<%= userRooms[i].maxMembers %>
                         </td>
-                        <td><input class='join-room-button' type='button' onclick="joinRoom('<%= userRooms[i].name %>')"
-                                value='Join' /></td>
+                        <td><input class='join-room-button' type='button'
+                                onclick="joinRoom('<%= utility.sanitizeInput(userRooms[i].name) %>')" value='Join' />
+                        </td>
                         <td><input class='delete-room-button' type='button'
-                                onclick="deleteRoom('<%= userRooms[i].name %>')" value='Delete' /></td>
+                                onclick="deleteRoom('<%= utility.sanitizeInput(userRooms[i].name) %>')"
+                                value='Delete' /></td>
                     </tr>
                     <% } %>
             </tbody>

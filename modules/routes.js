@@ -4,6 +4,7 @@
 
 const { RoomMessage } = require("./model");
 const model = require("./model");
+const utility = require("./utility");
 
 module.exports = {
     index: (req, res) => {
@@ -30,13 +31,15 @@ module.exports = {
             res.redirect("/");
             return;
         }
+
         res.render('home', {
             loadMenuBar: true,
             pageTitle: "Home",
             styleList: ["tables.css", "home-style.css"],
             currentPageLink: "home",
             containerId: "home-page-container",
-            rooms: db.searchRooms()
+            rooms: db.searchRooms(),
+            utility: utility
         });
     },
     account: (db) => (req, res) => {
@@ -45,6 +48,7 @@ module.exports = {
             res.redirect("/");
             return;
         }
+
         res.render('account', {
             loadMenuBar: true,
             pageTitle: "Account",
@@ -52,7 +56,8 @@ module.exports = {
             currentPageLink: "account",
             containerId: "account-page-container",
             user: user,
-            userRooms: db.getUserRooms(user.username)
+            userRooms: db.getUserRooms(user.username),
+            utility: utility
         });
     },
     room: (db) => (req, res) => {
@@ -69,6 +74,7 @@ module.exports = {
         }
 
         const room = db.getRoom(roomName);
+
         room.addMember(user);
         res.render('room', {
             loadMenuBar: true,
@@ -106,6 +112,11 @@ module.exports = {
         const firstName = req.body["first-name"];
         const lastName = req.body["last-name"];
 
+        if (!(utility.validateName(firstName) && utility.validateName(lastName) && utility.validatePassword(password))) {
+            res.redirect("/");
+            return;
+        }
+
         if (password != passwordConfirm) {
             res.redirect("/");
             return;
@@ -124,8 +135,8 @@ module.exports = {
         res.redirect("/home");
     },
     searchRoom: (db) => (req, res) => {
-        const username = req.session.username;
-        if (!username) {
+        const user = req.session.user;
+        if (!user) {
             res.redirect("/");
             return;
         }
@@ -141,7 +152,8 @@ module.exports = {
             styleList: ["tables.css", "home-style.css"],
             currentPageLink: "home",
             containerId: "home-page-container",
-            rooms: db.searchRooms(roomName)
+            rooms: db.searchRooms(roomName),
+            utility: utility
         });
     },
     postMessage: (db) => (req, res) => {
@@ -158,7 +170,7 @@ module.exports = {
                 return;
             }
         }
-        res.sendStatus(404);
+        res.sendStatus(400);
     },
     createRoom: (db) => (req, res) => {
         const user = req.session.user;
@@ -183,7 +195,7 @@ module.exports = {
             db.removeRoom(roomName);
             res.sendStatus(200);
         } else {
-            res.sendStatus(404);
+            res.sendStatus(400);
         }
     },
     editAccount: (db) => (req, res) => {
@@ -193,10 +205,16 @@ module.exports = {
             return;
         }
         let currentUser = db.getUser(user.username);
-        currentUser.firstName = req.body["first-name"];
-        currentUser.lastName = req.body["last-name"];
-        currentUser.usernameColor = req.body["username-color"];
-        req.session.user = currentUser;
+        const firstName = req.body["first-name"];
+        const lastName = req.body["last-name"];
+
+        if (utility.validateName(firstName) && utility.validateName(lastName)) {
+            currentUser.firstName = firstName;
+            currentUser.lastName = lastName;
+            currentUser.usernameColor = req.body["username-color"];
+            req.session.user = currentUser;
+        }
+
         res.redirect("/account");
     }
 };

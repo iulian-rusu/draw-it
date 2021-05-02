@@ -17,7 +17,7 @@
                         <td><%= rooms[i].name %></td>
                         <td><%= rooms[i].creator %></td>
                         <td><%= rooms[i].currentMembers %>/<%= rooms[i].maxMembers %></td>
-                        <td><input class='join-room-button' type='button' value='Join' onclick="joinRoom('<%= rooms[i].name %>')"/></td>
+                        <td><input class='join-room-button' type='button' value='Join' onclick="joinRoom('<%= utility.sanitizeInput(rooms[i].name) %>')"/></td>
                     </tr>
                 <% } %>
             </tbody>
