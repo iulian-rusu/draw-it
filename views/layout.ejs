@@ -33,6 +33,12 @@
         </div>
         <% } %>
     </header>
+        <% for(let i = 0; i<errors.length; ++i) { %>
+            <div class="index-error-message">
+                <span class="close-error-button" onclick="this.parentElement.style.display='none';">&times;</span>
+                <%= errors[i] %>
+            </div>
+        <% } %>
         <div class="container" id="<%= containerId %>">
             <%- body -%>
         </div>

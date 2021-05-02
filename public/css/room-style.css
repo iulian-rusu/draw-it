@@ -149,6 +149,12 @@
     word-wrap: break-word;
 }
 
+.chat-message-timestamp {
+    color: var(--dark-gray);
+    font-size: small;
+    font-weight: normal;
+}
+
 #message-list .chat-message-name {
     font-weight: bold;
     color: var(--dark-blue);

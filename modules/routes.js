@@ -5,6 +5,9 @@
 const { RoomMessage } = require("./model");
 const model = require("./model");
 const utility = require("./utility");
+const crypto = require("bcrypt");
+const saltRounds = 10;
+let errors = [];
 
 module.exports = {
     index: (req, res) => {
@@ -19,7 +22,9 @@ module.exports = {
             styleList: ["index-style.css"],
             currentPageLink: "index",
             containerId: "front-page-container",
+            errors: errors
         });
+        errors = [];
     },
     logout: (req, res) => {
         req.session.user = null;
@@ -28,6 +33,7 @@ module.exports = {
     home: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
@@ -39,12 +45,15 @@ module.exports = {
             currentPageLink: "home",
             containerId: "home-page-container",
             rooms: db.searchRooms(),
-            utility: utility
+            utility: utility,
+            errors: errors
         });
+        errors = [];
     },
     account: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
@@ -57,23 +66,32 @@ module.exports = {
             containerId: "account-page-container",
             user: user,
             userRooms: db.getUserRooms(user.username),
-            utility: utility
+            utility: utility,
+            errors: errors
         });
+        errors = [];
     },
     room: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
 
         const roomName = req.query["name"];
         if (!roomName) {
+            errors = ["Invalid room"];
             res.redirect("/");
             return;
         }
 
         const room = db.getRoom(roomName);
+        if(!room) {
+            errors = ["Invalid room"];
+            res.redirect("/home");
+            return;
+        }
 
         room.addMember(user);
         res.render('room', {
@@ -83,20 +101,25 @@ module.exports = {
             currentPageLink: "room",
             containerId: "room-page-container",
             room: room,
-            session: req.session
+            session: req.session,
+            errors: errors
         });
+        errors = [];
     },
-    logIn: (db) => (req, res) => {
+    logIn: (db) => async (req, res) => {
         const username = req.body["username"];
         const password = req.body["password"];
         const user = db.getUser(username);
 
         if (user === null) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
 
-        if (user.password != password) {
+        const isSamePassword = await crypto.compare(password, user.password);
+        if (!isSamePassword) {
+            errors = ["Failed to log in"];
             res.redirect("/");
             return;
         }
@@ -105,7 +128,7 @@ module.exports = {
 
         res.redirect("/home");
     },
-    register: (db) => (req, res) => {
+    register: (db) => async (req, res) => {
         const username = req.body["username"];
         const password = req.body["password"];
         const passwordConfirm = req.body["password-confirm"];
@@ -113,21 +136,26 @@ module.exports = {
         const lastName = req.body["last-name"];
 
         if (!(utility.validateName(firstName) && utility.validateName(lastName) && utility.validatePassword(password))) {
+            errors = ["Please enter valid values"];
             res.redirect("/");
             return;
         }
 
         if (password != passwordConfirm) {
+            errors = ["Passwords don't match"];
             res.redirect("/");
             return;
         }
+
+        const hashedPassword = await crypto.hash(password, saltRounds);
 
         if (db.userExists(username)) {
+            errors = [`Username '${username}' is already taken`];
             res.redirect("/");
             return;
         }
 
-        const newUser = new model.User(username, firstName, lastName, password);
+        const newUser = new model.User(username, firstName, lastName, hashedPassword);
         db.addUser(newUser);
         // remember user details in session
         req.session.user = newUser;
@@ -137,6 +165,7 @@ module.exports = {
     searchRoom: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
@@ -153,8 +182,10 @@ module.exports = {
             currentPageLink: "home",
             containerId: "home-page-container",
             rooms: db.searchRooms(roomName),
-            utility: utility
+            utility: utility,
+            errors: errors
         });
+        errors = [];
     },
     postMessage: (db) => (req, res) => {
         const msgBody = req.body["body"];
@@ -170,17 +201,25 @@ module.exports = {
                 return;
             }
         }
+        console.log(roomName);
+        console.log(msgBody);
+        console.log(username);
         res.sendStatus(400);
     },
     createRoom: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }
         const roomName = req.body["name"];
+        if (!roomName) {
+            res.redirect("/home");
+            return;
+        }
         let maxMembers = req.body["max-members"];
-        if (parseInt(maxMembers) > 10) {
+        if (!maxMembers || parseInt(maxMembers) > 10) {
             maxMembers = "10";
         }
         const author = user.username;
@@ -201,6 +240,7 @@ module.exports = {
     editAccount: (db) => (req, res) => {
         const user = req.session.user;
         if (!user) {
+            errors = ["You must be logged in"];
             res.redirect("/");
             return;
         }

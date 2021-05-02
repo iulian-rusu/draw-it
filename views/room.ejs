@@ -54,10 +54,12 @@
                 <li>
                     <div class="chat-message">
                         <div class="chat-message-name" style="color: <%= room.messages[i].user.usernameColor %>">
-                            <p>
-                                <%= room.messages[i].user.username %>
-                            </p>
+                            <%= room.messages[i].user.username %>
+                            <span class="chat-message-timestamp">
+                                <%= room.messages[i].timestamp %>
+                            </span>
                         </div>
+                        
                         <div class="chat-message-body">
                             <p>
                                 <%= room.messages[i].body %>

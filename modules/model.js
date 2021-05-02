@@ -2,6 +2,8 @@
     model.js - defines the structure of user data, room data, messages etc.
 */
 
+const moment = require('moment');
+
 class User {
     constructor(username, firstName, lastName, password, roomsJoined = 0, messagesSent = 0, usernameColor = "#003264") {
         this.firstName = firstName;
@@ -26,6 +28,7 @@ class RoomMessage {
     constructor (user, body) {
         this.user = user;
         this.body = body;
+        this.timestamp = moment().format("HH:mm:ss");
     }
 }
 

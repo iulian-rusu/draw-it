@@ -42,14 +42,21 @@ function clearMessageBox() {
 
 function insertMessageInChat(username, usernameColor, message) {
     const chat = document.getElementById("message-list");
-    const newMessage = `            
+    const date = new Date();
+    const time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    const newMessage = ` 
     <li>
         <div class="chat-message">
             <div class="chat-message-name" style="color: ${usernameColor}">
-                <p>${username}</p>
+                ${username}
+                <span class="chat-message-timestamp">
+                    ${time}
+                </span>
             </div>
             <div class="chat-message-body">
-                <p>${message}</p>
+                <p>
+                    ${message}
+                </p>
             </div>
         </div>
     </li>`;

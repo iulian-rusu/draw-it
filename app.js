@@ -5,13 +5,16 @@ const session = require('express-session');
 const model = require("./modules/model");
 const database = require("./modules/database");
 const routes = require("./modules/routes");
+const crypto = require("bcrypt");
 
 const db = new database.DBAccess()
 const app = express();
 
-function insertTestData(db) {
-    const testUser1 = new model.User("test", "Test FN", "Test LN", "test");
-    const testUser2 = new model.User("test2", "John", "Smith", "test");
+async function insertTestData(db) {
+    const pass = "test";
+    const hashedPassword = await crypto.hash(pass, 10);
+    const testUser1 = new model.User("test", "Test FN", "Test LN", hashedPassword);
+    const testUser2 = new model.User("test2", "John", "Smith", hashedPassword);
     const testRoom1 = new model.Room("room1", "test", 10);
     const testRoom2 = new model.Room("room two", "test2", 2);
 
@@ -21,7 +24,7 @@ function insertTestData(db) {
     db.addRoom(testRoom2);
 }
 
-insertTestData(db);
+insertTestData(db).then((resolve, reject) => { console.log("Generated test users."); });
 
 app.set('view engine', 'ejs');
 

@@ -3,7 +3,8 @@
     --light-blue:rgb(154, 206, 255);
     --blue: rgb(102, 154, 204);
     --dark-blue: rgb(0, 50, 100);
-    --gray: rgb(200, 207, 209);
+    --gray: rgb(200, 200, 200);
+    --dark-gray: rgb(150, 150, 150);
     --light-gray: rgb(240, 240, 240);
     --pencil-tip-color: rgb(255, 203, 155);
     --highlight: rgb(211, 0, 70);
@@ -179,4 +180,33 @@ input[type="submit"]:hover, input[type="button"]:hover {
         background-color: var(--dark-blue);
         color: var(--bg-color);
     }
+}
+
+.index-error-message {
+    position: absolute;
+    padding: 15px;
+    max-width: 300px;
+    min-width: 200px;
+    margin-left: calc(50% - 150px);
+    margin-top: 200px;
+    z-index: 1000;
+    background-color: var(--highlight);
+    color: var(--bg-color);
+    border: 2px solid var(--highlight);
+    border-radius: 7px;
+}
+
+.close-error-button {
+    margin-left: 15px;
+    color: var(--bg-color);
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-error-button:hover {
+    color: var(--dark-blue);
 }
