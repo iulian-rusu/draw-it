@@ -1,16 +1,22 @@
-// setup socket.io
-const socket = io();
-socket.on("message", () => {
-    console.log(message);
-});
-
 // DOM manipulation
 const chat = document.getElementById("message-list");
 const messageBox = document.getElementById("chat-input-box");
 const chatDiv = document.getElementById("chat-messages");
+const roomMembers = document.getElementById("room-members-tbody");
+// data about current user
 const username = document.getElementById("username").innerHTML;
-const roomName = document.getElementById("room-name").innerHTML;
 const usernameColor = document.getElementById("username-color").innerHTML;
+const id = document.getElementById("id").innerHTML;
+const role = document.getElementById("role").innerHTML;
+const roomName = document.getElementById("room-name").innerHTML;
+
+// setup socket.io
+const socket = io();
+socket.emit("member-connect", { username: username, id: id, role: role, roomName: roomName });
+socket.on("member-disconnect", data => removeMemberFromRoom(data));
+socket.on("insert-member", member => insertMemberInRoom(member));
+socket.on("message", message => insertMessageInChat(message));
+
 
 function onKeyPress() {
     const key = window.event.keyCode;
@@ -27,22 +33,16 @@ function sendMessage() {
         return;
     }
 
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            insertMessageInChat(username, usernameColor, message);
-        }
-    };
-
-    xhttp.open("POST", `/post-message`, true);
-    xhttp.setRequestHeader('Content-Type', 'application/json');
     const messageData = {
+        roomName: roomName,
         username: username,
-        body: message,
-        roomName: roomName
+        usernameColor: usernameColor,
+        timestamp: moment().calendar().toLowerCase(),
+        body: message
     }
-    xhttp.send(JSON.stringify(messageData));
 
+    console.log(messageData);
+    socket.emit("chat-message", messageData);
     clearMessageBox();
 }
 
@@ -50,19 +50,19 @@ function clearMessageBox() {
     messageBox.value = '';
 }
 
-function insertMessageInChat(username, usernameColor, message) {
+function insertMessageInChat(message) {
     const newMessage = ` 
     <li>
         <div class="chat-message">
-            <div class="chat-message-name" style="color: ${usernameColor}">
-                ${username}
+            <div class="chat-message-name" style="color: ${message.usernameColor}">
+                ${message.username}
                 <span class="chat-message-timestamp">
-                    ${moment().calendar().toLowerCase()}
+                    ${message.timestamp}
                 </span>
             </div>
             <div class="chat-message-body">
                 <p>
-                    ${message}
+                    ${message.body}
                 </p>
             </div>
         </div>
@@ -71,23 +71,47 @@ function insertMessageInChat(username, usernameColor, message) {
     scrollChatDown();
 }
 
+function insertMemberInRoom(member) {
+    const newMember = `
+    <tr id="${member.id}" > 
+        <td>
+            ${member.username}
+        </td>
+        <td>
+            ${member.role}
+        </td>
+    </tr>`;
+    roomMembers.innerHTML += newMember;
+}
+
+function removeMemberFromRoom(data) {
+    const members = roomMembers.childNodes;
+    for (const member of members) {
+        if (member.id == data.id) {
+            roomMembers.removeChild(member);
+        }
+    }
+}
+
 function scrollChatDown() {
     chatDiv.scrollTop = chatDiv.scrollHeight;
 }
 
 window.addEventListener("load", () => {
+    const members = roomMembers.childNodes;
+    let exists = false;
+    for (const member of members) {
+        if (member.id == id) {
+            exists = true;
+            break;
+        }
+    }
+    if (!exists) {
+        insertMemberInRoom({ id: id, username: username, role: role });
+    }
+});
+
+window.addEventListener("load", () => {
     scrollChatDown();
     clearMessageBox();
 });
-
-window.onbeforeunload = () => {
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("POST", `/leave-room`, true);
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    const data = {
-        roomName: roomName,
-        username: username
-    };
-
-    xhttp.send(JSON.stringify(data));
-};

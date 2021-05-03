@@ -42,8 +42,6 @@ app.get('/room', routes.room(db));
 app.get("/search-room", routes.searchRoom(db));
 app.post("/log-in", routes.logIn(db));
 app.post("/register", routes.register(db));
-app.post("/post-message", routes.postMessage(db));
 app.post("/room", routes.createRoom(db));
-app.post("/leave-room", routes.leaveRoom(db))
 app.post("/edit-account", routes.editAccount(db));
 app.delete("/room", routes.deleteRoom(db));

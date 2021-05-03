@@ -103,10 +103,7 @@ class MongoDB {
                     callback("User doesn't exist");
                     return;
                 }
-                if (room.members.length >= room.maxMembers) {
-                    callback(false);
-                    return;
-                }
+                
                 let exists = false;
                 for (let i = 0; i < room.members.length; ++i) {
                     if (room.members[i].user.equals(user._id)) {
@@ -114,20 +111,27 @@ class MongoDB {
                         break;
                     }
                 }
-                if (!exists) {
-                    let role = "guest";
-                    let id = "guest-" + room.members.length + 1;
-                    if (room.creator == user.username) {
-                        role = "creator";
-                        id = "creator";
-                    }
-                    if (user.roomsJoined.indexOf(room._id) == -1) {
-                        user.roomsJoined.push(room._id);
-                        user.save();
-                    }
-                    room.members.push({ user: user._id, id: id, role: role });
+
+                if (room.members.length >= room.maxMembers && !exists) {
+                    callback("Room full");
+                    return;
                 }
-                room.save().then(() => callback(null)).catch(err => console.log(err));
+              
+                let role = "guest";
+                let id = "guest-" + room.members.length + 1;
+                if (room.creator == user.username) {
+                    role = "creator";
+                    id = "creator";
+                }
+                if (user.roomsJoined.indexOf(room._id) == -1) {
+                    user.roomsJoined.push(room._id);
+                    user.save();
+                }
+                const roomMember = { user: user._id, id: id, role: role };
+                if (!exists) {
+                    room.members.push(roomMember);
+                }
+                room.save().then(() => callback(null, roomMember)).catch(err => console.log(err));
             });
         });
     }

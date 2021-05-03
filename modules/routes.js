@@ -91,7 +91,7 @@ module.exports = {
             res.redirect("/");
             return;
         }
-        db.addRoomMember(roomName, user.username, err => {
+        db.addRoomMember(roomName, user.username, (err, insertedUser) => {
             if(err) {
                 errors.push(err);
                 res.redirect("/");
@@ -108,7 +108,6 @@ module.exports = {
                     res.redirect("/");
                     return;
                 }
-
                 res.render('room', {
                     loadMenuBar: true,
                     pageTitle: "Room",
@@ -117,18 +116,12 @@ module.exports = {
                     containerId: "room-page-container",
                     room: room,
                     session: req.session,
+                    self: insertedUser,
                     errors: errors
                 });
                 errors = [];
             });
         });
-    },
-    leaveRoom: (db) => async (req, res) => {
-        const username = req.body["username"];
-        const roomName = req.body["roomName"];
-        db.removeRoomMember(roomName, username, () => {
-            res.sendStatus(200);
-        })
     },
     logIn: (db) => async (req, res) => {
         const username = req.body["username"];
@@ -230,19 +223,6 @@ module.exports = {
             });
             errors = [];
         })
-    },
-    postMessage: (db) => (req, res) => {
-        const msgBody = req.body["body"];
-        const roomName = req.body["roomName"];
-        const username = req.body["username"];
-
-        if (roomName && msgBody && username) {
-            db.postRoomMessage(roomName, new RoomMessage(username, msgBody), () => {
-                res.sendStatus(200);
-            });
-        } else {
-            res.sendStatus(400);
-        }
     },
     createRoom: (db) => (req, res) => {
         const user = req.session.user;

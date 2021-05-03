@@ -1,9 +1,11 @@
 #room-page-container>* {
     margin: 5px;
+    min-height: 400px;
 }
 
 #room-members {
     width: calc(25% - 5px);
+    position: relative;
 }
 
 #drawing-space {
@@ -83,7 +85,6 @@
 
     #chat {
         order: 1;
-        height: 450px;
     }
 
     #room-members {
@@ -200,5 +201,16 @@
     width: 100%;
     max-width: 200px;
     align-self: center;
+}
+
+#my-info-div {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    display: flex;
+}
+
+#my-info-div h3 {
+    margin: auto;
 }
 
