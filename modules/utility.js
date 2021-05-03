@@ -1,4 +1,8 @@
-const nameRegex = /^[A-Za-z ]+$/
+/*
+    utility.js - various utility functions
+*/
+
+const nameRegex = /^[A-Za-z ]+$/;
 
 function validateName(name) {
     return name.length >= 2 && nameRegex.test(name);

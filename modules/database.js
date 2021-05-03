@@ -11,9 +11,12 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
 class MongoDB {
-    constructor() {
+    constructor(callback) {
         mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-            .then((result) => console.log("Connected to cluster."))
+            .then(() => {
+                console.log("Connected to cluster.");
+                callback();
+            })
             .catch((err) => console.log(err));
     }
 
@@ -118,7 +121,7 @@ class MongoDB {
                         role = "creator";
                         id = "creator";
                     }
-                    if(user.roomsJoined.indexOf(room._id) == -1){
+                    if (user.roomsJoined.indexOf(room._id) == -1) {
                         user.roomsJoined.push(room._id);
                         user.save();
                     }

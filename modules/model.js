@@ -28,7 +28,7 @@ class RoomMessage {
     constructor (author, body, timestamp = null) {
         this.author = author;
         this.body = body;
-        this.timestamp = timestamp ?? moment().calendar();
+        this.timestamp = timestamp ?? moment().calendar().toLowerCase();
     }
 }
 

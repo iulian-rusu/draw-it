@@ -1,3 +1,17 @@
+// setup socket.io
+const socket = io();
+socket.on("message", () => {
+    console.log(message);
+});
+
+// DOM manipulation
+const chat = document.getElementById("message-list");
+const messageBox = document.getElementById("chat-input-box");
+const chatDiv = document.getElementById("chat-messages");
+const username = document.getElementById("username").innerHTML;
+const roomName = document.getElementById("room-name").innerHTML;
+const usernameColor = document.getElementById("username-color").innerHTML;
+
 function onKeyPress() {
     const key = window.event.keyCode;
     if (key == 13) {
@@ -7,9 +21,6 @@ function onKeyPress() {
 }
 
 function sendMessage() {
-    const username = document.getElementById("username").innerHTML;
-    const roomName = document.getElementById("room-name").innerHTML;
-    const usernameColor = document.getElementById("username-color").innerHTML;
     const input = document.getElementById("chat-input-box");
     const message = input.value;
     if (message.length === 0) {
@@ -36,20 +47,17 @@ function sendMessage() {
 }
 
 function clearMessageBox() {
-    const messageBox = document.getElementById("chat-input-box");
     messageBox.value = '';
 }
 
 function insertMessageInChat(username, usernameColor, message) {
-    const chat = document.getElementById("message-list");
-    const date = new Date();
     const newMessage = ` 
     <li>
         <div class="chat-message">
             <div class="chat-message-name" style="color: ${usernameColor}">
                 ${username}
                 <span class="chat-message-timestamp">
-                    ${moment().calendar()}
+                    ${moment().calendar().toLowerCase()}
                 </span>
             </div>
             <div class="chat-message-body">
@@ -64,7 +72,6 @@ function insertMessageInChat(username, usernameColor, message) {
 }
 
 function scrollChatDown() {
-    const chatDiv = document.getElementById("chat-messages");
     chatDiv.scrollTop = chatDiv.scrollHeight;
 }
 
@@ -74,9 +81,6 @@ window.addEventListener("load", () => {
 });
 
 window.onbeforeunload = () => {
-    const username = document.getElementById("username").innerHTML;
-    const roomName = document.getElementById("room-name").innerHTML;
-
     const xhttp = new XMLHttpRequest();
     xhttp.open("POST", `/leave-room`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
