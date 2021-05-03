@@ -2,11 +2,11 @@
     routes.js - contains the controller logic for all application routes
 */
 
-const { RoomMessage } = require("./model");
-const schema = require("./schema");
+const crypto = require("bcrypt");
+const moment = require("moment");
 const model = require("./model");
 const utility = require("./utility");
-const crypto = require("bcrypt");
+
 const saltRounds = 10;
 let errors = [];
 const pleaseLogInMessage = "You must be logged in to do that";
@@ -92,7 +92,7 @@ module.exports = {
             return;
         }
         db.addRoomMember(roomName, user.username, (err, insertedUser) => {
-            if(err) {
+            if (err) {
                 errors.push(err);
                 res.redirect("/");
                 return;
@@ -108,6 +108,7 @@ module.exports = {
                     res.redirect("/");
                     return;
                 }
+
                 res.render('room', {
                     loadMenuBar: true,
                     pageTitle: "Room",
@@ -116,6 +117,7 @@ module.exports = {
                     containerId: "room-page-container",
                     room: room,
                     session: req.session,
+                    moment: moment,
                     self: insertedUser,
                     errors: errors
                 });
@@ -267,7 +269,7 @@ module.exports = {
         const lastName = req.body["last-name"];
         const usernameColor = req.body["username-color"];
         if (utility.validateName(firstName) && utility.validateName(lastName)) {
-            db.updateUser(user.username, {firstName, lastName, usernameColor}, updated => {
+            db.updateUser(user.username, { firstName, lastName, usernameColor }, updated => {
                 req.session.user = updated;
                 res.redirect("/account");
             });

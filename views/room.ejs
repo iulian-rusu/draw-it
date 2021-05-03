@@ -57,7 +57,7 @@
                         <div class="chat-message-name" style="color: <%= room.messages[i].author.usernameColor %>">
                             <%= room.messages[i].author.username %>
                             <span class="chat-message-timestamp">
-                                <%= room.messages[i].timestamp %>
+                                <%= moment.unix(room.messages[i].timestamp).calendar().toLowerCase() %>
                             </span>
                         </div>
                         
