@@ -2,29 +2,11 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const model = require("./modules/model");
-const database = require("./modules/database");
+const MongoDB = require("./modules/database");
 const routes = require("./modules/routes");
-const crypto = require("bcrypt");
 
-const db = new database.DBAccess()
 const app = express();
-
-async function insertTestData(db) {
-    const pass = "test";
-    const hashedPassword = await crypto.hash(pass, 10);
-    const testUser1 = new model.User("test", "Test FN", "Test LN", hashedPassword);
-    const testUser2 = new model.User("test2", "John", "Smith", hashedPassword);
-    const testRoom1 = new model.Room("room1", "test", 10);
-    const testRoom2 = new model.Room("room two", "test2", 2);
-
-    db.addUser(testUser1);
-    db.addUser(testUser2);
-    db.addRoom(testRoom1);
-    db.addRoom(testRoom2);
-}
-
-insertTestData(db).then((resolve, reject) => { console.log("Generated test users."); });
+const db = new MongoDB(result => app.listen(port, () => console.log(`Server running on http://localhost:${port}`)))
 
 app.set('view engine', 'ejs');
 
@@ -48,9 +30,11 @@ app.get("/search-room", routes.searchRoom(db));
 app.post("/log-in", routes.logIn(db));
 app.post("/register", routes.register(db));
 app.post("/post-message", routes.postMessage(db));
-app.post("/create-room", routes.createRoom(db));
-app.post("/delete-room", routes.deleteRoom(db));
+app.post("/room", routes.createRoom(db));
+app.post("/leave-room", routes.leaveRoom(db))
 app.post("/edit-account", routes.editAccount(db));
+
+app.delete("/room", routes.deleteRoom(db));
 
 const port = 7070;
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));

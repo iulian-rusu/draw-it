@@ -1,5 +1,5 @@
 /*
-    model.js - defines the structure of user data, room data, messages etc.
+    model.js - defines the structure of user data, room data and messages for runtime use
 */
 
 const moment = require('moment');
@@ -10,7 +10,7 @@ class User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.roomsJoined = roomsJoined;
+        this.roomsJoined = [];
         this.messagesSent = messagesSent;
         this.usernameColor = usernameColor;
     }
@@ -25,10 +25,10 @@ class RoomMember {
 }
 
 class RoomMessage {
-    constructor (user, body) {
-        this.user = user;
+    constructor (author, body, timestamp = null) {
+        this.author = author;
         this.body = body;
-        this.timestamp = moment().format("HH:mm:ss");
+        this.timestamp = timestamp ?? moment().calendar();
     }
 }
 
@@ -39,36 +39,11 @@ class Room {
         this.maxMembers = maxMembers;
         this.members = []
         this.messages = []
-        const d = new Date();
-        const month = d.toLocaleString('default', { month: 'long' });
-        this.creationDate = `${d.getDate()} ${month} ${d.getFullYear()}`;
+        this.creationDate = moment().format('LLL');
     }
 
     get currentMembers() {
         return this.members.length;
-    }
-
-    contains(username) {
-        for (let i = 0; i < this.members.length; ++i) {
-            if (this.members[i].user.username == username) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    addMember(user) {
-        if(this.contains(user.username)) {
-            return;
-        }
-        let role = "guest";
-        let id = "guest-" + this.currentMembers + 1;
-        if (this.creator == user.username) {
-            role = "creator";
-            id = "creator";
-        }
-        const newMember = new RoomMember(user, id, role);
-        this.members.push(newMember);
     }
 }
 

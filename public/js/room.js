@@ -10,7 +10,7 @@ function deleteRoom(name) {
         }
     };
 
-    xhttp.open("POST", `/delete-room`, true);
+    xhttp.open("DELETE", `/room`, true);
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.send(`name=${name}`);
 }

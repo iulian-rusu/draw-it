@@ -19,7 +19,7 @@
         <fieldset id="app-info-fieldset">
             <legend>App Information</legend>
             <label>Rooms Joined</label>
-            <input type="number" value="<%= user.roomsJoined %>" disabled />
+            <input type="number" value="<%= user.roomsJoined.length %>" disabled />
             <br />
             <label>Messages Sent</label>
             <input type="number" value="<%= user.messagesSent %>" disabled />
@@ -43,7 +43,7 @@
         </fieldset>
         <br />
         <div class="form-buttons">
-            <input type="submit" value="Save" id="edit-personal-info-button" />
+            <input type="submit" value="Update" id="edit-personal-info-button" />
         </div>
     </form>
 </div>
@@ -70,7 +70,7 @@
                             <%= userRooms[i].creationDate %>
                         </td>
                         <td>
-                            <%= userRooms[i].currentMembers %>/<%= userRooms[i].maxMembers %>
+                            <%= userRooms[i].members.length  %>/<%= userRooms[i].maxMembers %>
                         </td>
                         <td><input class='join-room-button' type='button'
                                 onclick="joinRoom('<%= utility.sanitizeInput(userRooms[i].name) %>')" value='Join' />

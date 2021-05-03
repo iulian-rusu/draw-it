@@ -43,14 +43,13 @@ function clearMessageBox() {
 function insertMessageInChat(username, usernameColor, message) {
     const chat = document.getElementById("message-list");
     const date = new Date();
-    const time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const newMessage = ` 
     <li>
         <div class="chat-message">
             <div class="chat-message-name" style="color: ${usernameColor}">
                 ${username}
                 <span class="chat-message-timestamp">
-                    ${time}
+                    ${moment().calendar()}
                 </span>
             </div>
             <div class="chat-message-body">
@@ -76,5 +75,15 @@ window.addEventListener("load", () => {
 
 window.onbeforeunload = () => {
     const username = document.getElementById("username").innerHTML;
-    // notify leave room
+    const roomName = document.getElementById("room-name").innerHTML;
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", `/leave-room`, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    const data = {
+        roomName: roomName,
+        username: username
+    };
+
+    xhttp.send(JSON.stringify(data));
 };

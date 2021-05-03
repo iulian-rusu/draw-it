@@ -16,7 +16,7 @@
                     <tr>
                         <td><%= rooms[i].name %></td>
                         <td><%= rooms[i].creator %></td>
-                        <td><%= rooms[i].currentMembers %>/<%= rooms[i].maxMembers %></td>
+                        <td><%= rooms[i].members.length %>/<%= rooms[i].maxMembers %></td>
                         <td><input class='join-room-button' type='button' value='Join' onclick="joinRoom('<%= utility.sanitizeInput(rooms[i].name) %>')"/></td>
                     </tr>
                 <% } %>
@@ -33,7 +33,7 @@
             <input type="submit" value="Search" id="search-room-button" />
         </fieldset>
     </form>
-    <form id="create-form" method="POST" action="/create-room">
+    <form id="create-form" method="POST" action="/room">
         <fieldset>
             <legend>Create Room</legend>
             <label>Room Name</label>

@@ -2,92 +2,179 @@
     database.js - provides an interface for accessing the database
 */
 
-class DBAccess {
+// URI for connecting to cloud database
+const dbURI = "mongodb+srv://rwuser:rwuser@mongo.y8efb.mongodb.net/draw-it?retryWrites=true&w=majority";
+const schema = require("./schema");
+const mongoose = require("mongoose");
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
+class MongoDB {
     constructor() {
-        this.userDB = [];
-        this.roomDB = [];
+        mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+            .then((result) => console.log("Connected to cluster."))
+            .catch((err) => console.log(err));
     }
 
-    addUser(user) {
-        if (!this.userExists(user.username)) {
-            this.userDB.push(user);
-            return true;
-        }
-        return false;
+    addUser(user, callback) {
+        const convertedUser = schema.User({
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            password: user.password,
+            roomsJoined: user.roomsJoined,
+            messagesSent: user.messagesSent,
+            usernameColor: user.usernameColor
+        });
+        convertedUser.save().then(callback).catch(err => console.log(err));
     }
 
-    removeUser(username) {
-        this.userDB = this.userDB.filter(u => u.username != username);
+    getUser(username, callback) {
+        schema.User.findOne({ username: username }).then(callback).catch(err => console.log(err));
     }
 
-    getUser(username) {
-        for (let i = 0; i < this.userDB.length; ++i) {
-            if (this.userDB[i].username == username) {
-                return this.userDB[i];
+    updateUser(username, userData, callback) {
+        this.getUser(username, user => {
+            if (!user) {
+                return;
             }
-        }
-        return null
+            user.firstName = userData.firstName;
+            user.lastName = userData.lastName;
+            user.usernameColor = userData.usernameColor;
+            user.save().then(callback).catch(err => console.log(err));
+        });
     }
 
-    userExists(username) {
-        for (let i = 0; i < this.userDB.length; ++i) {
-            if (this.userDB[i].username == username) {
-                return true;
+    removeUser(username, callback) {
+        schema.User.deleteOne({ username: username }).then(callback).catch(err => console.log(err));
+    }
+
+    userExists(username, callback) {
+        schema.User.exists({ username: username }).then(callback).catch(err => console.log(err));
+    }
+
+    getAllUsers(callback) {
+        schema.User.find().then(callback).catch(err => console.log(err));
+    }
+
+    addRoom(room, callback) {
+        const convertedRoom = new schema.Room({
+            name: room.name,
+            creator: room.creator,
+            maxMembers: room.maxMembers,
+            creationDate: room.creationDate,
+            members: [],
+            messages: []
+        });
+        convertedRoom.save().then(callback).catch(err => console.log(err));
+    }
+
+    postRoomMessage(name, message, callback) {
+        const self = this;
+        self.getRoom(name, room => {
+            if (!room) {
+                return;
             }
-        }
-        return false;
+            self.getUser(message.author, author => {
+                if (!author) {
+                    return;
+                }
+                room.messages.push({ author: author._id, body: message.body, timestamp: message.timestamp });
+                ++author.messagesSent;
+                author.save();
+                room.save().then(callback).catch(err => console.log(err));
+            });
+        });
     }
 
-    getAllUsers(username) {
-        if (!username) {
-            return this.userDB;
-        }
-        return this.userDB.filter(u => u.username == username);
-    }
-
-    addRoom(room) {
-        if (!this.roomExists(room.name)) {
-            this.roomDB.push(room);
-            return true;
-        }
-        return false;
-    }
-
-    removeRoom(name) {
-        this.roomDB = this.roomDB.filter(r => r.name != name);
-    }
-
-    getRoom(name) {
-        for (let i = 0; i < this.roomDB.length; ++i) {
-            if (this.roomDB[i].name == name) {
-                return this.roomDB[i];
+    addRoomMember(name, username, callback) {
+        const self = this;
+        self.getRoom(name, room => {
+            if (!room) {
+                callback("Room doesn't exist");
+                return;
             }
-        }
-        return null;
+            self.getUser(username, user => {
+                if (!user) {
+                    callback("User doesn't exist");
+                    return;
+                }
+                if (room.members.length >= room.maxMembers) {
+                    callback(false);
+                    return;
+                }
+                let exists = false;
+                for (let i = 0; i < room.members.length; ++i) {
+                    if (room.members[i].user.equals(user._id)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) {
+                    let role = "guest";
+                    let id = "guest-" + room.members.length + 1;
+                    if (room.creator == user.username) {
+                        role = "creator";
+                        id = "creator";
+                    }
+                    if(user.roomsJoined.indexOf(room._id) == -1){
+                        user.roomsJoined.push(room._id);
+                        user.save();
+                    }
+                    room.members.push({ user: user._id, id: id, role: role });
+                }
+                room.save().then(() => callback(null)).catch(err => console.log(err));
+            });
+        });
     }
 
-    roomExists(name) {
-        for (let i = 0; i < this.roomDB.length; ++i) {
-            if (this.roomDB[i].name == name) {
-                return true;
+    removeRoomMember(name, username, callback) {
+        const self = this;
+        self.getRoom(name, room => {
+            if (!room) {
+                return;
             }
-        }
-        return false;
+            self.getUser(username, user => {
+                if (!user) {
+                    return;
+                }
+                room.members = room.members.filter(m => !m.user.equals(user._id));
+                room.save().then(callback).catch(err => console.log(err));
+            });
+        });
     }
 
-    searchRooms(name) {
-        if (name == undefined) {
-            return this.roomDB;
-        }
-        return this.roomDB.filter(r => r.name.toLowerCase().includes(name.toLowerCase()));
+    getPopulatedRoom(name, callback) {
+        schema.Room.findOne({ name: name })
+            .populate("members.user")
+            .populate("messages.author")
+            .then(callback).catch(err => console.log(err));
     }
 
-    getUserRooms(username) {
-        return this.roomDB.filter(r => r.creator == username);
+    getRoom(name, callback) {
+        schema.Room.findOne({ name: name }).then(callback).catch(err => console.log(err));
+    }
+
+    removeRoom(name, callback) {
+        schema.Room.deleteOne({ name: name }).then(callback).catch(err => console.log(err));
+    }
+
+    roomExists(name, callback) {
+        schema.Room.exists({ name: name }).then(callback).catch(err => console.log(err));
+    }
+
+    searchRooms(name, callback) {
+        if (!name) {
+            schema.Room.find().then(callback).catch(err => console.log(err));
+        } else {
+            schema.Room.find({ name: name }).then(callback).catch(err => console.log(err));
+        }
+    }
+
+    getUserRooms(username, callback) {
+        schema.Room.find({ creator: username }).then(callback).catch(err => console.log(err));
     }
 }
 
-
-module.exports = {
-    DBAccess: DBAccess
-}
+module.exports = MongoDB;
