@@ -60,19 +60,21 @@ module.exports = {
             res.redirect("/");
             return;
         }
-        db.getUserRooms(user.username, userRooms => {
-            res.render('account', {
-                loadMenuBar: true,
-                pageTitle: "Account",
-                styleList: ["tables.css", "account-style.css"],
-                currentPageLink: "account",
-                containerId: "account-page-container",
-                user: user,
-                userRooms: userRooms,
-                utility: utility,
-                errors: errors
+        db.getUser(user.username, user => {
+            db.getUserRooms(user.username, userRooms => {
+                res.render('account', {
+                    loadMenuBar: true,
+                    pageTitle: "Account",
+                    styleList: ["tables.css", "account-style.css"],
+                    currentPageLink: "account",
+                    containerId: "account-page-container",
+                    user: user,
+                    userRooms: userRooms,
+                    utility: utility,
+                    errors: errors
+                });
+                errors = [];
             });
-            errors = [];
         });
     },
     room: (db) => (req, res) => {
