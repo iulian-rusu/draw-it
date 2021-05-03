@@ -168,7 +168,8 @@ class MongoDB {
         if (!name) {
             schema.Room.find().then(callback).catch(err => console.log(err));
         } else {
-            schema.Room.find({ name: name }).then(callback).catch(err => console.log(err));
+            const nameRegex = new RegExp(name, 'i')
+            schema.Room.find({ name: nameRegex }).then(callback).catch(err => console.log(err));
         }
     }
 
