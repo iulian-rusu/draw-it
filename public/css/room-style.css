@@ -118,6 +118,10 @@
     flex-direction: column;
 }
 
+#message-list {
+    max-width: 100%;
+}
+
 #chat-messages {
     height: calc(75% - 10px);
     display: flex;
@@ -143,6 +147,7 @@
     border-radius: 14px;
     border-top-left-radius: 0;
     display:inline-block;
+    max-width: 100%;
 }
 
 .chat-message-body p {
