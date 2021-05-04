@@ -155,10 +155,10 @@ module.exports = {
     },
     register: (db) => (req, res) => {
         const username = req.body["username"];
-        const password = req.body["password"];
         const passwordConfirm = req.body["password-confirm"];
-        const firstName = req.body["first-name"];
-        const lastName = req.body["last-name"];
+        let password = req.body["password"];
+        let firstName = req.body["first-name"];
+        let lastName = req.body["last-name"];
 
         if (!utility.validateUsername(username)) {
             errors.push("Username is invalid");
@@ -179,6 +179,10 @@ module.exports = {
         if (password != passwordConfirm) {
             errors.push("Passwords don't match");
         }
+
+        firstName = firstName.trim();
+        lastName = lastName.trim();
+        password = password.trim();
 
         crypto.hash(password, saltRounds, (err, hashedPassword) => {
             if (err) {
@@ -244,7 +248,7 @@ module.exports = {
             res.redirect("/home");
             return;
         }
-        if(roomName.length > 30) {
+        if (roomName.length > 30) {
             errors.push("Room name too long");
             res.redirect("/home");
             return;
@@ -280,7 +284,11 @@ module.exports = {
         const lastName = req.body["last-name"];
         const usernameColor = req.body["username-color"];
         if (utility.validateName(firstName) && utility.validateName(lastName)) {
-            db.updateUser(user.username, { firstName, lastName, usernameColor }, updated => {
+            db.updateUser(user.username, {
+                firstName: firstName.trim(),
+                lastName: lastName.trim(),
+                usernameColor
+            }, updated => {
                 req.session.user = updated;
                 res.redirect("/account");
             });

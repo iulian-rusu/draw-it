@@ -8,11 +8,12 @@ The application uses `socket.io` for real time chat communication. All data is s
 **App features include**:
 * User account management system with registration and modification of data on request
 * Password encryption with `bcrypt`
-* Error handling with cliend-side message boxes
+* Error handling with client-side message boxes
 * Session management for detecting invalid access to resources
 * Real-time chat with customizable username colors
 * User statistics like the number of messages sent
 * Real-time collaborative drawing board
+* Support for touch screen drawing
 * Ability to create/delete rooms and set a maximum amount of members
 * Ability to search rooms by name
 
@@ -23,7 +24,7 @@ The application uses `socket.io` for real time chat communication. All data is s
 4. Create a [MongoDB Cloud](https://www.mongodb.com/cloud/atlas) account and set-up a database
     * Alternatively, install `MongoDB` locally
 5. Get the connection URI for the database
-6. Run `$ echo 'DB_URI=<YOUR_URI>' > .env` in the main directory, where `<YOUR_URI>` is specific to your database
+6. Run `$ echo 'DB_URI=<YOUR_URI>' > .env` in the main directory, where `<YOUR_URI>` is the connection URI for your database
 7. Run `$ node app.js` in the main directory to start the server on `0.0.0.0:7070`
 8. Visit `http://localhost:7070` in your browser
 
@@ -42,3 +43,6 @@ The application uses `socket.io` for real time chat communication. All data is s
 
 ### Drawing on the board
 ![Room](./images/room3.png)
+
+### Drawing with touch events on mobile displays
+![Room Mobile](./images/room_mobile.png)

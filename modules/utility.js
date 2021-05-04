@@ -6,15 +6,15 @@ const nameRegex = /^[A-Za-z ]+$/;
 const usernameRegex = /^[_A-Za-z][_A-Za-z0-9]+$/;
 
 function validateUsername(username) {
-    return username.length >= 4 && username.length <= 30 && usernameRegex.test(username);
+    return username && username.length >= 4 && username.length <= 30 && usernameRegex.test(username);
 }
 
 function validateName(name) {
-    return name.length >= 2 && name.length <= 30 && nameRegex.test(name);
+    return name && name.length >= 2 && name.length <= 30 && nameRegex.test(name);
 }
 
 function validatePassword(password) {
-    return password.length >= 4 && password.length <= 30;
+    return password && password.length >= 4 && password.length <= 30;
 }
 
 function sanitizeInput(input) {
