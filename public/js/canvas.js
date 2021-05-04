@@ -82,11 +82,37 @@ window.onload = () => {
         onMouseDown(evt);
     };
 
-    // Register event handlers
+    // Register event handlers for mouse
     canvas.addEventListener("mousedown", onMouseDown, false);
     canvas.addEventListener("mouseup", endStroke, false);
     canvas.addEventListener("mouseout", endStroke, false);
     canvas.addEventListener("mouseenter", onMouseEnter, false);
+
+    // Register event handlers for mobile
+    const touchHandler = event => {
+        var touches = event.changedTouches,
+            first = touches[0],
+            type = "";
+        switch (event.type) {
+            case "touchstart": type = "mousedown"; break;
+            case "touchmove": type = "mousemove"; break;
+            case "touchend": type = "mouseup"; break;
+            default: return;
+        }
+
+        var simulatedEvent = document.createEvent("MouseEvent");
+        simulatedEvent.initMouseEvent(type, true, true, window, 1,
+            first.screenX, first.screenY,
+            first.clientX, first.clientY, false,
+            false, false, false, 0, null);
+
+        first.target.dispatchEvent(simulatedEvent);
+    }
+
+    canvas.addEventListener("touchstart", touchHandler, true);
+    canvas.addEventListener("touchmove", touchHandler, true);
+    canvas.addEventListener("touchend", touchHandler, true);
+    canvas.addEventListener("touchcancel", touchHandler, true);
 
     const drawLine = (pointStart, pointEnd, lineWidth, color) => {
         context.translate(0.5, 0.5);
@@ -103,7 +129,7 @@ window.onload = () => {
 
     socket.on("canvas-update", data => drawLine(data.pointStart, data.pointEnd, data.lineWidth, data.color));
     socket.on("canvas-get-state", () => {
-        const canvasState = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); 
+        const canvasState = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
         socket.emit("canvas-get-state", canvasState);
     });
     socket.on("canvas-set-state", state => {

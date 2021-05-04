@@ -1,12 +1,16 @@
+#front-page-container {
+    background-image: url("../resources/splash.png");
+	background-size: 1000px;
+    background-repeat: no-repeat;
+}
+
 #left-div {
 	display: flex;
 	flex-direction: column;
 	width: 60%;
 	min-width: 350px;
-	min-height: 100%;
+	min-height: 400px;
 	align-items: center;
-	background-image: url("../resources/splash.png");
-	background-size: cover;
 }
 
 #right-div {
@@ -38,11 +42,14 @@
     background-color: transparent;
 }
 
-#sign-in-form>input {
-	border: 2px solid var(--dark-blue);
+#sign-in-form>input, #register-form>input {
 	border-radius: 7px;
-    width: 200px;
     background-color: hsla(0, 0%, 100%, 0.5);
+}
+
+#sign-in-form>input {
+    width: 200px;
+    border: 2px solid var(--dark-blue);
 }
 
 #register-form {
@@ -50,10 +57,6 @@
     border-radius: 14px;
     width: 400px;
     padding: 20px;
-}
-
-#register-form>input {
-	border-bottom: 2px solid var(--dark-blue);
 }
 
 #register-button {

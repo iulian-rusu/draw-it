@@ -117,6 +117,21 @@ legend {
 	}
 }
 
+@media screen and (max-width: 500px) {
+    .logo img{
+        width: 30px;
+        height: 30px;
+        margin: 15px;
+        transition:  transform 0.75s ease-in-out;
+    }
+    .title {
+        font-size: 200%;
+    }
+    .logo-header {
+        height: 50px;
+    }
+}
+
 footer {
     position: fixed;
     bottom: 0px;
