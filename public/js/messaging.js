@@ -12,9 +12,15 @@ const roomName = document.getElementById("room-name").innerHTML;
 
 // setup socket.io
 const socket = io();
-socket.emit("member-connect", { username: username, id: id, role: role, roomName: roomName });
-socket.on("member-disconnect", data => removeMemberFromRoom(data));
-socket.on("insert-member", member => insertMemberInRoom(member));
+socket.emit("member-connect", { username: username, id: id, role: role, roomName: roomName, usernameColor: usernameColor });
+socket.on("member-disconnect", data => {
+    removeMemberFromRoom(data);
+    insertSystemMessageInChat(data.username, data.usernameColor, "has left the room");
+});
+socket.on("insert-member", member => {
+    insertMemberInRoom(member);
+    insertSystemMessageInChat(member.username, member.usernameColor, "has joined the room");
+});
 socket.on("message", message => insertMessageInChat(message));
 
 
@@ -68,6 +74,15 @@ function insertMessageInChat(message) {
         </div>
     </li>`;
     chat.innerHTML += newMessage;
+    scrollChatDown();
+}
+
+function insertSystemMessageInChat(name, color, action) {
+    const newSysMessage = `               
+    <li class="system-message">
+        <p><span style="color: ${color}">${name}</span> ${action}</p>
+    </li>`;
+    chat.innerHTML += newSysMessage;
     scrollChatDown();
 }
 

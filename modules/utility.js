@@ -3,6 +3,11 @@
 */
 
 const nameRegex = /^[A-Za-z ]+$/;
+const usernameRegex = /^[_A-Za-z][_A-Za-z0-9]+$/;
+
+function validateUsername(username) {
+    return username.length >= 4 && usernameRegex.test(username);
+}
 
 function validateName(name) {
     return name.length >= 2 && nameRegex.test(name);
@@ -27,6 +32,7 @@ function desanitizeRooms(rooms) {
 }
 
 module.exports = {
+    validateUsername: validateUsername,
     validateName: validateName,
     validatePassword: validatePassword,
     sanitizeInput: sanitizeInput,

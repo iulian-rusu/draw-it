@@ -121,6 +121,7 @@
 
 #message-list {
     max-width: 100%;
+    min-width: 100%;
 }
 
 #chat-messages {
@@ -164,6 +165,20 @@
 #message-list .chat-message-name {
     font-weight: bold;
     color: var(--dark-blue);
+}
+
+.system-message {
+    width: 100%;
+    display: flex;
+}
+
+.system-message p {
+    margin: auto;
+    color: var(--dark-gray);
+}
+
+.system-message p span {
+    font-weight: bold;
 }
 
 #chat-input-form {

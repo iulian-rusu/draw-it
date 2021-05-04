@@ -16,14 +16,6 @@ class User {
     }
 }
 
-class RoomMember {
-    constructor(user, id, role) {
-        this.user = user;
-        this.id = id;
-        this.role = role;
-    }
-}
-
 class RoomMessage {
     constructor (author, body, timestamp = null) {
         this.author = author;
@@ -49,7 +41,6 @@ class Room {
 
 module.exports = {
     User: User,
-    RoomMember: RoomMember,
     RoomMessage: RoomMessage,
     Room: Room
 };

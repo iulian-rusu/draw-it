@@ -160,6 +160,10 @@ module.exports = {
         const firstName = req.body["first-name"];
         const lastName = req.body["last-name"];
 
+        if (!utility.validateUsername(username)) {
+            errors.push("Username is invalid");
+        }
+        
         if (!utility.validateName(firstName)) {
             errors.push("First name is invalid");
         }

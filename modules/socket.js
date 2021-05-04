@@ -15,11 +15,7 @@ class SocketListener {
             socket.on("member-connect", connectData => {
                 socket.join(connectData.roomName);
                 currentUser = connectData;
-                socket.broadcast.to(connectData.roomName).emit("insert-member", {
-                    username: connectData.username,
-                    role: connectData.role,
-                    id: connectData.id
-                });
+                socket.broadcast.to(connectData.roomName).emit("insert-member", connectData);
             });
 
             socket.on("disconnect", () => {
