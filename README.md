@@ -23,7 +23,7 @@ The application uses `socket.io` for real time chat communication. All data is s
 4. Create a [MongoDB Cloud](https://www.mongodb.com/cloud/atlas) account and set-up a database
     * Alternatively, install `MongoDB` locally
 5. Get the connection URI for the cloud database
-6. Run `$ echo YOUR_URI > .env` in the main directory
+6. Run `$ echo 'DB_URI=<YOUR_URI>' > .env` in the main directory
 7. Run `$ node app.js` in the main directory
 8. Visit `http://localhost:7070` in your browser
 
