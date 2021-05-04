@@ -5,7 +5,6 @@ class SocketListener {
     constructor(server, db) {
         this.io = socketio(server);
         this.db = db;
-        this.canvasHistory = {};
     }
 
     run() {
@@ -14,24 +13,17 @@ class SocketListener {
             let currentUser = {};
 
             socket.on("member-connect", connectData => {
+                console.log(`User '${connectData.username}' joined room '${connectData.roomName}'`)
                 socket.join(connectData.roomName);
-                let roomCanvasHistory = self.canvasHistory[connectData.roomName];
-                if (roomCanvasHistory == undefined) {
-                    // room has no previous canvas history
-                    roomCanvasHistory = [];
-                } else {
-                    // update new user's canvas
-                    for (const event of roomCanvasHistory) {
-                        socket.emit("canvas-update", event);
-                    }
-                }
                 currentUser = connectData;
-                socket.broadcast.to(connectData.roomName).emit("insert-member", connectData);
+                socket.broadcast.to(currentUser.roomName).emit("canvas-get-state");
+                socket.broadcast.to(currentUser.roomName).emit("insert-member", connectData);
             });
 
             socket.on("disconnect", () => {
                 self.db.removeRoomMember(currentUser.roomName, currentUser.username, () => {
-                    socket.broadcast.emit("member-disconnect", currentUser);
+                    console.log(`User '${currentUser.username}' left room '${currentUser.roomName}'`)
+                    socket.broadcast.to(currentUser.roomName).emit("member-disconnect", currentUser);
                 })
             });
 
@@ -41,11 +33,11 @@ class SocketListener {
             });
 
             socket.on("canvas-update", data => {
-                if (!self.canvasHistory[currentUser.roomName]) {
-                    self.canvasHistory[currentUser.roomName] = [];
-                }
-                self.canvasHistory[currentUser.roomName].push(data);
                 socket.broadcast.to(currentUser.roomName).emit("canvas-update", data);
+            })
+
+            socket.on("canvas-get-state", state => {
+                socket.broadcast.to(currentUser.roomName).emit("canvas-set-state", state);
             })
         })
     }

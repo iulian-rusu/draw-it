@@ -89,7 +89,6 @@ window.onload = () => {
     canvas.addEventListener("mouseenter", onMouseEnter, false);
 
     const drawLine = (pointStart, pointEnd, lineWidth, color) => {
-        console.log("received");
         context.translate(0.5, 0.5);
         const scaleX = canvas.width / canvas.offsetWidth;
         const scaleY = canvas.height / canvas.offsetHeight;
@@ -103,4 +102,16 @@ window.onload = () => {
     };
 
     socket.on("canvas-update", data => drawLine(data.pointStart, data.pointEnd, data.lineWidth, data.color));
+    socket.on("canvas-get-state", () => {
+        const canvasState = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); 
+        socket.emit("canvas-get-state", canvasState);
+    });
+    socket.on("canvas-set-state", state => {
+        const image = new Image();
+        const ctx = canvas.getContext("2d");
+        image.src = state;
+        image.onload = () => {
+            ctx.drawImage(image, 0, 0);
+        };
+    });
 };

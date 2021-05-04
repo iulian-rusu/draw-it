@@ -148,7 +148,7 @@ module.exports = {
 
                 // remember user details in session
                 req.session.user = user;
-
+                console.log(`User logged in: ${user.username}`);
                 res.redirect("/home");
             });
         });
@@ -199,6 +199,7 @@ module.exports = {
                 db.addUser(newUser, result => {
                     // remember user details in session
                     req.session.user = newUser;
+                    console.log(`User registered: ${newUser.username}`);
                     res.redirect("/home");
                 });
             })
