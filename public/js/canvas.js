@@ -18,18 +18,26 @@ window.onload = () => {
         const scaleX = canvas.width / canvas.offsetWidth;
         const scaleY = canvas.height / canvas.offsetHeight;
         context.beginPath();
-        context.moveTo(scaleX*latestPoint[0], scaleY*latestPoint[1]);
+        const startPoint = latestPoint;
+        context.moveTo(scaleX * latestPoint[0], scaleY * latestPoint[1]);
         context.strokeStyle = isBrushSelected.checked ? colorSelect.value : bgColor;
         context.lineWidth = toolSize.value * 3;
-        
+
         if (!isBrushSelected.checked) {
             context.lineWidth *= 2;
         }
 
-        context.lineTo(scaleX*newPoint[0], scaleY*newPoint[1]);
+        context.lineTo(scaleX * newPoint[0], scaleY * newPoint[1]);
         context.stroke();
         latestPoint = newPoint;
         context.translate(-0.5, -0.5);
+
+        socket.emit("canvas-update", {
+            pointStart: startPoint,
+            pointEnd: newPoint,
+            lineWidth: context.lineWidth,
+            color: context.strokeStyle
+        });
     };
 
     // Event helpers
@@ -79,4 +87,20 @@ window.onload = () => {
     canvas.addEventListener("mouseup", endStroke, false);
     canvas.addEventListener("mouseout", endStroke, false);
     canvas.addEventListener("mouseenter", onMouseEnter, false);
+
+    const drawLine = (pointStart, pointEnd, lineWidth, color) => {
+        console.log("received");
+        context.translate(0.5, 0.5);
+        const scaleX = canvas.width / canvas.offsetWidth;
+        const scaleY = canvas.height / canvas.offsetHeight;
+        context.beginPath();
+        context.moveTo(scaleX * pointStart[0], scaleY * pointStart[1]);
+        context.strokeStyle = color;
+        context.lineWidth = lineWidth;
+        context.lineTo(scaleX * pointEnd[0], scaleY * pointEnd[1]);
+        context.stroke();
+        context.translate(-0.5, -0.5);
+    };
+
+    socket.on("canvas-update", data => drawLine(data.pointStart, data.pointEnd, data.lineWidth, data.color));
 };

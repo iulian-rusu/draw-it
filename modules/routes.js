@@ -163,7 +163,7 @@ module.exports = {
         if (!utility.validateUsername(username)) {
             errors.push("Username is invalid");
         }
-        
+
         if (!utility.validateName(firstName)) {
             errors.push("First name is invalid");
         }
@@ -239,6 +239,12 @@ module.exports = {
         }
         const roomName = req.body["name"];
         if (!roomName) {
+            errors.push("Room name missing");
+            res.redirect("/home");
+            return;
+        }
+        if(roomName.length > 30) {
+            errors.push("Room name too long");
             res.redirect("/home");
             return;
         }

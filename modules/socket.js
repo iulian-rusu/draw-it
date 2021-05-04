@@ -5,6 +5,7 @@ class SocketListener {
     constructor(server, db) {
         this.io = socketio(server);
         this.db = db;
+        this.canvasHistory = {};
     }
 
     run() {
@@ -14,6 +15,16 @@ class SocketListener {
 
             socket.on("member-connect", connectData => {
                 socket.join(connectData.roomName);
+                let roomCanvasHistory = self.canvasHistory[connectData.roomName];
+                if (roomCanvasHistory == undefined) {
+                    // room has no previous canvas history
+                    roomCanvasHistory = [];
+                } else {
+                    // update new user's canvas
+                    for (const event of roomCanvasHistory) {
+                        socket.emit("canvas-update", event);
+                    }
+                }
                 currentUser = connectData;
                 socket.broadcast.to(connectData.roomName).emit("insert-member", connectData);
             });
@@ -28,6 +39,14 @@ class SocketListener {
                 self.db.postRoomMessage(message.roomName, new model.RoomMessage(message.username, message.body),
                     () => self.io.to(message.roomName).emit("message", message));
             });
+
+            socket.on("canvas-update", data => {
+                if (!self.canvasHistory[currentUser.roomName]) {
+                    self.canvasHistory[currentUser.roomName] = [];
+                }
+                self.canvasHistory[currentUser.roomName].push(data);
+                socket.broadcast.to(currentUser.roomName).emit("canvas-update", data);
+            })
         })
     }
 }

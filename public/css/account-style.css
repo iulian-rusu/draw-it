@@ -22,6 +22,12 @@
     width: calc(60% - 5px);
 }
 
+@media screen and (max-width: 1200px) {
+    #my-rooms td {
+        max-width: 150px;
+    }
+}
+
 #my-rooms .delete-room-button {
     border-color: var(--highlight);
     color: var(--highlight);
@@ -38,6 +44,10 @@
         background-color: var(--highlight);
         color: var(--bg-color);
     }
+}
+
+#my-rooms .buttons-th {
+    min-width: 100px;
 }
 
 #info-container>form input {
