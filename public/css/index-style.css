@@ -43,13 +43,19 @@
 }
 
 #sign-in-form>input, #register-form>input {
-	border-radius: 7px;
     background-color: hsla(0, 0%, 100%, 0.5);
 }
 
 #sign-in-form>input {
     width: 200px;
+    border-radius: 7px;
     border: 2px solid var(--dark-blue);
+}
+
+#register-form>input {
+	border-bottom: 2px solid var(--dark-blue);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 #register-form {
