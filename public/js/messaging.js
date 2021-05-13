@@ -47,7 +47,6 @@ function sendMessage() {
         body: message
     }
 
-    console.log(messageData);
     socket.emit("chat-message", messageData);
     clearMessageBox();
 }
