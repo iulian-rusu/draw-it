@@ -12,6 +12,12 @@ window.onload = () => {
     let drawing = false;
     let latestPoint;
 
+    // Save drawing on server
+    const saveCanvasState = () => {
+        const canvasState = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        socket.emit("canvas-get-state", canvasState);
+    };
+
     // Drawing function
     const continueStroke = newPoint => {
         context.translate(0.5, 0.5);
@@ -53,6 +59,7 @@ window.onload = () => {
         }
         drawing = false;
         evt.currentTarget.removeEventListener("mousemove", onMouseMove, false);
+        saveCanvasState();
     };
 
     const BUTTON = 0b01;
@@ -128,10 +135,7 @@ window.onload = () => {
     };
 
     socket.on("canvas-update", data => drawLine(data.pointStart, data.pointEnd, data.lineWidth, data.color));
-    socket.on("canvas-get-state", () => {
-        const canvasState = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        socket.emit("canvas-get-state", canvasState);
-    });
+
     socket.on("canvas-set-state", state => {
         const image = new Image();
         const ctx = canvas.getContext("2d");
@@ -140,4 +144,5 @@ window.onload = () => {
             ctx.drawImage(image, 0, 0);
         };
     });
+
 };

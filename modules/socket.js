@@ -5,6 +5,7 @@ class SocketListener {
     constructor(server, db) {
         this.io = socketio(server);
         this.db = db;
+        this.canvasStates = {};
     }
 
     run() {
@@ -16,8 +17,12 @@ class SocketListener {
                 console.log(`User '${connectData.username}' joined room '${connectData.roomName}'`)
                 socket.join(connectData.roomName);
                 currentUser = connectData;
-                socket.broadcast.to(currentUser.roomName).emit("canvas-get-state");
                 socket.broadcast.to(currentUser.roomName).emit("insert-member", connectData);
+                // update new user's canvas state
+
+                if(self.canvasStates[currentUser.roomName]) {
+                    socket.emit("canvas-set-state", self.canvasStates[currentUser.roomName]);
+                }
             });
 
             socket.on("disconnect", () => {
@@ -37,7 +42,7 @@ class SocketListener {
             })
 
             socket.on("canvas-get-state", state => {
-                socket.broadcast.to(currentUser.roomName).emit("canvas-set-state", state);
+                self.canvasStates[currentUser.roomName] = state;
             })
         })
     }
