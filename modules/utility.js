@@ -4,7 +4,7 @@
 
 const nameRegex = /^[A-Za-z ]+$/;
 const usernameRegex = /^[_A-Za-z][_A-Za-z0-9]+$/;
-const roomRegex = /^[^<>]+&/
+const roomRegex = /^[^<>]+$/
 
 function validateUsername(username) {
     return username && username.length >= 4 && username.length <= 30 && usernameRegex.test(username);
