@@ -1,5 +1,6 @@
 const socketio = require("socket.io");
 const model = require("./model");
+const utility = require("./utility");
 
 class SocketListener {
     constructor(server, db) {
@@ -20,7 +21,7 @@ class SocketListener {
                 socket.broadcast.to(currentUser.roomName).emit("insert-member", connectData);
                 // update new user's canvas state
 
-                if(self.canvasStates[currentUser.roomName]) {
+                if (self.canvasStates[currentUser.roomName]) {
                     socket.emit("canvas-set-state", self.canvasStates[currentUser.roomName]);
                 }
             });
@@ -34,7 +35,10 @@ class SocketListener {
 
             socket.on("chat-message", message => {
                 self.db.postRoomMessage(message.roomName, new model.RoomMessage(message.username, message.body),
-                    () => self.io.to(message.roomName).emit("message", message));
+                    () => {
+                        message.body = utility.sanitizeInput(message.body);
+                        { self.io.to(message.roomName).emit("message", message); }
+                    });
             });
 
             socket.on("canvas-update", data => {

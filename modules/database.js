@@ -83,7 +83,11 @@ class MongoDB {
                 if (!author) {
                     return;
                 }
-                room.messages.push({ author: author._id, body: message.body, timestamp: message.timestamp });
+                room.messages.push({
+                    author: author._id,
+                    body:message.body,
+                    timestamp: message.timestamp
+                });
                 ++author.messagesSent;
                 author.save();
                 room.save().then(callback).catch(err => console.log(err));
@@ -103,7 +107,7 @@ class MongoDB {
                     callback("User doesn't exist");
                     return;
                 }
-                
+
                 let exists = false;
                 for (let i = 0; i < room.members.length; ++i) {
                     if (room.members[i].user.equals(user._id)) {
@@ -116,7 +120,7 @@ class MongoDB {
                     callback("Room full");
                     return;
                 }
-              
+
                 let role = "guest";
                 let id = "guest-" + room.members.length + 1;
                 if (room.creator == user.username) {

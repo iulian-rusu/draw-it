@@ -248,8 +248,8 @@ module.exports = {
             res.redirect("/home");
             return;
         }
-        if (roomName.length > 30) {
-            errors.push("Room name too long");
+        if (!utility.validateRoomName(roomName)) {
+            errors.push("Invalid room name");
             res.redirect("/home");
             return;
         }
