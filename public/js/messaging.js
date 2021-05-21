@@ -23,7 +23,6 @@ socket.on("insert-member", member => {
 });
 socket.on("message", message => insertMessageInChat(message));
 
-
 function onKeyPress() {
     const key = window.event.keyCode;
     if (key == 13) {
@@ -40,9 +39,6 @@ function sendMessage() {
     }
 
     const messageData = {
-        roomName: roomName,
-        username: username,
-        usernameColor: usernameColor,
         timestamp: moment().calendar().toLowerCase(),
         body: message
     }

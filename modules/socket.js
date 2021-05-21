@@ -34,10 +34,15 @@ class SocketListener {
             });
 
             socket.on("chat-message", message => {
-                self.db.postRoomMessage(message.roomName, new model.RoomMessage(message.username, message.body),
+                self.db.postRoomMessage(currentUser.roomName, new model.RoomMessage(currentUser.username, message.body),
                     () => {
-                        message.body = utility.sanitizeInput(message.body);
-                        { self.io.to(message.roomName).emit("message", message); }
+                        const emitMessage = {
+                            username: currentUser.username,
+                            usernameColor: currentUser.usernameColor,
+                            timestamp: message.timestamp,
+                            body:  utility.sanitizeInput(message.body)
+                        }
+                        { self.io.to(currentUser.roomName).emit("message", emitMessage); }
                     });
             });
 
