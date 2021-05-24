@@ -23,11 +23,11 @@ function validateRoomName(roomName) {
 }
 
 function sanitizeInput(input) {
-    return input.split("\'").join("\\\'").split("<").join( "&lt;").split(">").join( "&gt;");
+    return input.split("\'").join("\\\'").split("<").join("&lt;").split(">").join("&gt;");
 }
 
 function desanitizeInput(input) {
-    return input.split("\\\'").join("\'").split("&lt;").join( "<").split("&gt;").join( ">");
+    return input.split("\\\'").join("\'").split("&lt;").join("<").split("&gt;").join(">");
 }
 
 function desanitizeRooms(rooms) {

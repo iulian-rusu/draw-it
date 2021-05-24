@@ -14,10 +14,16 @@ const roomName = document.getElementById("room-name").innerHTML;
 const socket = io();
 socket.emit("member-connect", { username: username, id: id, role: role, roomName: roomName, usernameColor: usernameColor });
 socket.on("member-disconnect", data => {
+    if(data.id == id) {
+        return;
+    }
     removeMemberFromRoom(data);
     insertSystemMessageInChat(data.username, data.usernameColor, "has left the room");
 });
 socket.on("insert-member", member => {
+    if(member.username == username) {
+        return;
+    }
     insertMemberInRoom(member);
     insertSystemMessageInChat(member.username, member.usernameColor, "has joined the room");
 });
@@ -63,7 +69,7 @@ function insertMessageInChat(message) {
             </div>
             <div class="chat-message-body">
                 <p>
-                    ${message.body}
+                    ${message.body.split("\\'").join("'")}
                 </p>
             </div>
         </div>
